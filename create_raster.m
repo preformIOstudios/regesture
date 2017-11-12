@@ -9,6 +9,7 @@ f = load(fName);
 %---------------
 %create self-similarity matrix
 %---------------
+%TODO: normalize & filter rows to clean data
 %collapse data
 d = sum(f, 2);
 %create a matrix for each bone
