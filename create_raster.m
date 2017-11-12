@@ -5,22 +5,16 @@ function [ ssi ] = create_raster( fName )
 
 %import file
 f = load(fName);
-%store refolding value
-h = size(f,1);
 
 %---------------
 %create self-similarity matrix
 %---------------
-%unfold data
-d = reshape(f, [], 1);
+%collapse data
+d = sum(f, 2);
 %create a matrix for each bone
-d = repmat(d, 1, h);
-%refold data
-d = reshape(d', h, h,[]);
+d = repmat(d, 1, numel(d));
 %calculate difference values
-ssm = abs(permute(d,[2 1 3]) - d);
-%flatten into single image
-ssi = sum(ssm, 3);
+ssi = abs(d' - d);
 %display image graphs of data (scaled and unscaled)
 figure, imagesc(ssi);
 figure, image(ssi);
