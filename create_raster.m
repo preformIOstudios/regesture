@@ -12,7 +12,7 @@ f = load(fName);
 %TODO: normalize & filter rows to clean data
 %collapse data to one value per frame
 d = sum(f, 2);
-%create a matrix for each frame
+%create a row for each frame
 d = repmat(d, 1, numel(d));
 %calculate difference values
 ssi = abs(d' - d);
