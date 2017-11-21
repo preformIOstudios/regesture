@@ -1,37 +1,43 @@
-function [ ssi ] = create_raster( fName )
+function [ D ] = create_raster( fName )
 
 %CREATE_RASTER Summary of this function goes here
 %   Detailed explanation goes here
 
 %import file
-f = load(fName);
+DATA = load(fName);
 
 %---------------
 %create self-similarity matrix
 %---------------
-%TODO: normalize & filter rows to clean data
-%collapse data to one value per frame
-d = sum(f, 2);
-%create a row for each frame
-d = repmat(d, 1, numel(d));
-%calculate difference values
-ssi = abs(d' - d);
-%display image graphs of data (scaled and unscaled)
-figure, imagesc(ssi);
-figure, image(ssi);
+%TODO: normalize & filter data rows (channels) 
+%   use only rotation and velocity data
 
-%save out scaled image
-ssi = log(ssi);
-ssi = ssi / max(ssi(:));
-figure, imshow(ssi);
-imwrite(ssi, [fName, '.png']);
+%collapse data matrix into a 1D array with a single value per frame
+V = sum(DATA, 2);
+%replicate those values into matrix for transposition math (TODO: is there
+%an easier way to do this and the next line in one command?)
+VV = repmat(V, 1, numel(V));
+%calculate distance between those vectors into a distance array
+D = abs(VV' - VV);
+%display distanc matrix (scaled and unscaled)
+figure, imagesc(D);
+figure, image(D);
+
+%save out scaled log of distances to an image
+D = log(D);
+D = D / max(D(:));
+figure, imshow(D);
+imwrite(D, [fName, '.png']);
 
 %---------------
 %create power / frequency matrix (TODO)
+%reference -- https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html?requestedDomain=www.mathworks.com
 %---------------
-%create FFT analysis matrix
+%analyze individual channels / groups of channels
+%create a 2D image to represent entire dataset
+%composit those into a single row for entire dataset
+%    - need to consider different methodologies
 %save out graph(s)
 %---------------
-
 
 end
