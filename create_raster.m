@@ -40,16 +40,38 @@ D = D / max(D(:));
 subplot(2,2,3);
 imshow(D);
 title('Distance Image [ log, scaled ]')
+%imwrite(D, [fName, '.png']); TODO: figure out why this is suddenly not
+%working
 
 %---------------
 %TODO: create power / frequency analysis
 %reference -- https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html?requestedDomain=www.mathworks.com
 %---------------
 %analyze individual channels / groups of channels
-%create a 2D image to represent entire dataset (channels on x, p/f values on y?)
+%plot entire analysis
+dRow = DATA(:,15);
+FFTanalysis = fft(dRow);
+figure,
+subplot(2,2,1);
+imagesc(dRow / max(dRow));
+title('dRow')
+
+subplot(2,2,2);
+grid on;
+hold on % add any enclosed plots to the same graph
+title('fft(dRow)')
+x = 0:1/(length(FFTanalysis)-1):1;
+length(x)
+length(FFTanalysis)
+plot(x, FFTanalysis);
 %composit those into a single p/f graph for entire dataset
 %    - need to consider different methodologies
-%save out image(s) / graph(s)
+hold off
+subplot(2,2,4);
+grid on;
+periodogram(dRow,rectwin(length(dRow)),length(dRow),60)
+%create a 2D image to represent entire dataset (channels on x, p/f values on y?)
+%save out image(s) / figures(s)
 %---------------
  
 end
