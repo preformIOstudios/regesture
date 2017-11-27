@@ -4,6 +4,11 @@ function [ D ] = create_raster( fName )
 %CREATE_RASTER Summary of this function goes here
 %   Detailed explanation goes here
 
+switch nargin
+    otherwise
+        fName = "MasterLiuPerformanceChar00.calc";
+end 
+
 %import file
 DATA = load(fName);
 
@@ -21,14 +26,20 @@ VV = repmat(V, 1, numel(V));
 %calculate distance between those vectors into a distance array
 D = abs(VV - VV');
 %display distance matrix (scaled and unscaled)
-figure, imagesc(D);
-figure, image(D);
+figure;
+subplot(2,2,1);
+imagesc(D);
+title('Distance Matrix [scaled]')
+subplot(2,2,2);
+image(D);
+title('Distance Matrix')
 
 %save out scaled log of distances to an image
 D = log(D);
 D = D / max(D(:));
-figure, imshow(D);
-imwrite(D, [fName, '.png']);
+subplot(2,2,3);
+imshow(D);
+title('Distance Image [ log, scaled ]')
 
 %---------------
 %TODO: create power / frequency analysis
