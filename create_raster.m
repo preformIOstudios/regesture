@@ -1,15 +1,17 @@
 function [] = create_raster( fName )
 
 %TODO: come up with a better name for this function
+%TODO: update function summary and explanation below
 %CREATE_RASTER Summary of this function goes here
 %   Detailed explanation goes here
 
+% use default dataset if none is provided
 switch nargin
     otherwise
         fName = 'MasterLiuPerformanceChar00.calc';
 end 
 
-%import file
+%import data from file name
 DATA = load(fName);
 
 %---------------
@@ -17,6 +19,7 @@ DATA = load(fName);
 %---------------
 %TODO: normalize & filter data rows (channels) 
 %   use only rotation and velocity data
+%   mask out rows with no data
 
 %collapse data matrix into 1D array with a single value per frame
 V = sum(DATA, 2);
@@ -49,8 +52,10 @@ colormap default %TODO: set image coloration back to default -- why are these im
 
 %save out scaled log of distances to an image
 imwrite(d, [fName, '.png']);
+%---------------
 %TODO: save out figure
 %TODO: move above to its own function and call it here
+
 
 %---------------
 %power / frequency analysis
@@ -89,7 +94,10 @@ figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
 %composit those into a single p/f graph for entire dataset
 %    - need to consider different methodologies
 %create a 2D image to represent entire dataset (channels on x, p/f values on y?)
-%save out image(s) / figures(s)
+%save out relevant image(s) for paper
+%save out figure for reference
 %---------------
- 
+%TODO: move power / frequency analysis to its own function and call it here
+%instead
+
 end
