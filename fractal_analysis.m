@@ -174,8 +174,6 @@ N = size(fDATA,1);
             y = llPYData;
             format long
             os = ones(size(x,1), 1);
-            size(x)
-            size(os)
             X = [os x];
             b = X\y;
             
