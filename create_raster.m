@@ -87,10 +87,6 @@ N = size(FFTDATA,1);
         plot(FFTDATA);
         title('FFTDATA');
         
-    subplot(2,2,3);
-        imagesc(log(PRDG));
-        title('log(PRDG)');
-
     subplot(2,2,2);
         set(gca, 'ColorOrder', ColorSet, 'NextPlot', 'replacechildren');
         grid on;
@@ -129,6 +125,13 @@ N = size(FFTDATA,1);
             yCalc2 = X*b;
             plot(x,yCalc2);
         hold off;
+        
+    subplot(2,2,3);
+        %distribution of slopes
+        slopes = b(2, :);
+        histfit(slopes)
+        title('histfit(slopes)');
+
 %composit those into a single p/f graph for entire dataset
 %    - need to consider different methodologies
 %create a 2D image to represent entire dataset (channels on x, p/f values on y?)
