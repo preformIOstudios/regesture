@@ -7,6 +7,8 @@ function [] = create_raster( fName )
 
 % use default dataset if none is provided
 switch nargin
+    case 1
+        
     otherwise
         fName = 'MasterLiuPerformanceChar00.calc';
 end 
