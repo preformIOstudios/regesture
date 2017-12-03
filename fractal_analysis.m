@@ -69,8 +69,8 @@ C = 4; R = 3;
 
     %display image of data
     subplot(C,R,R*0+3);
-        imshow(DATA, 'colormap', parula);
-        title('imshow(DATA)');
+        imagesc(DATA);
+        title('imagesc(DATA)');
         
     %display image of scaled log of filtered data distance matrix
     subplot(C,R,R*1+1);
@@ -85,8 +85,8 @@ C = 4; R = 3;
 
     %display image of filtered data
     subplot(C,R,R*1+3);
-        imshow(fDATA, 'colormap', parula);
-        title('imshow(fDATA)');
+        imagesc(fDATA);
+        title('imagesc(fDATA)');
         
     %display image of excluded data distance matrix
     subplot(C,R,R*2+1);
@@ -101,8 +101,8 @@ C = 4; R = 3;
 
     %display image of excluded data
     subplot(C,R,R*2+3);
-        imshow(eDATA, 'colormap', parula);
-        title('eDATA');
+        imagesc(eDATA);
+        title('imagesc(eDATA)');
   
     %display image of error data distance matrix
     subplot(C,R,R*3+1);
