@@ -53,9 +53,8 @@ C = 4; R = 3;
     ed = ed1 / max(ed1(:));
     %calculate distance contribution of excluded data
     format long
-    error = abs(fd-d);
-    errord = error / max(error(:));
-    sum(errord(:))
+    error1 = abs(D-fD);
+    error = error1 / max(error1(:));
     
     %display image of scaled log of distance matrix
     subplot(C,R,R*0+1);
@@ -112,10 +111,14 @@ C = 4; R = 3;
 
 
 %TODO: move this out to batch file
-%save out scaled log of distances to an image
-imwrite(d, [fName, 'data.png']);
-%save out scaled log of distances to an image
+%save out scaled log of data distances to an image
+imwrite(d, [fName, '_data.png']);
+%save out scaled log of filtered data distances to an image
 imwrite(fd, [fName, '_fdata.png']);
+%save out scaled log of excluded data distances to an image
+imwrite(ed, [fName, '_edata.png']);
+%save out scaled image of error data to an image
+imwrite(error, [fName, '_error.png']);
 %---------------
 %TODO: save out figure
 %TODO: move above to its own function and call it here
