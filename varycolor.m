@@ -39,6 +39,6 @@ else %default and where this function has an actual advantage
     colorwheel = vertcat(colors, colors(1,:));
     %create vector of how far apart colors should be on color wheel
     spread = n / NumberOfPlots;
-    spreadS = 1:spread:n;
+    spreadS = 1:spread:n+1-spread;
     ColorSet = interp1(colorwheel,spreadS);
 end
