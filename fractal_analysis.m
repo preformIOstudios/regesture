@@ -34,17 +34,16 @@ end
 DATA = load(fName);
 %set end, start, and cut points in the data
 e = size(DATA, 2);
-s = 1;    c = 337;
-% s = 15;   c = 21;
-% s = 15;   c = 20;
-% s = 15;   c = 17;
-% s = 15;   c = 15;
-% s = 15;   c = 21;
+s = 1;    c = 337; %337 elems
+% s = 15;   c = 21; %7 elems
+% s = 15;   c = 20; %6 elems
+% s = 15;   c = 17; %3 elems
+% s = 15;   c = 15; %1 elem
 ColorSet = varycolor(e);
 %TODO: normalize & filter data rows (channels) 
 %   use only rotation and velocity data
 %   mask out rows with no data
-%HACK: filter out some channels (TODO: should be specified in external data file)
+%HACK: filter out some channels (TODO: should be specified in external data file and based on zero data columns instead of this generic method)
 %filtered data
 fDATA = DATA(:, s:c); 
 fColorSet = varycolor(c-s+1);
