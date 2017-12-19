@@ -21,7 +21,8 @@ function ColorSet=varycolor(NumberOfPlots)
 %             plot(ones(20,1)*m,'Color',ColorSet(m,:))
 %         end
 
-%Created by Daniel Helmick 8/12/2008
+%Created by Daniel Helmick 8/12/2008 
+%  - https://www.mathworks.com/matlabcentral/fileexchange/21050-varycolor
 %Redesigned by david allen 12/02/2017
 
 narginchk(1,1)%correct number of input arguements??
