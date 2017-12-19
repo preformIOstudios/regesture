@@ -180,10 +180,16 @@ N = size(fDATA,1);
             %set PRDG plot style
             set(llPRDG, 'LineStyle', ':');
             %capture X and Y data for linear regression analysis
-            llPXData = cell2mat(get(llPRDG, 'XData'))';
-            llPYData = cell2mat(get(llPRDG, 'YData'))';
-            %set -Inf values to zero
-            llPXData(llPXData <= 0) = 0;
+            if N > 1
+                llPXData = cell2mat(get(llPRDG, 'XData'))';
+                llPYData = cell2mat(get(llPRDG, 'YData'))';
+            else
+                llPXData = get(llPRDG, 'XData')';
+                llPYData = get(llPRDG, 'YData')';
+            end
+            %set Inf values to nearest value
+            llPXData(llPXData == Inf) = max(llPXData(llPXData<Inf));
+            llPXData(llPXData == -Inf) = min(llPXData(llPXData>-Inf));
             
             %calculate linear regression + yintercept
             x = llPXData;
