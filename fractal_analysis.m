@@ -1,16 +1,33 @@
-function [] = fractal_analysis( fName )
+function [] = fractal_analysis( fName, sampleSize, dFilter, ignoreZ )
 
 %TODO: update function summary and explanation below
 %CREATE_RASTER Summary of this function goes here
 %   Detailed explanation goes here
 
-% use default dataset if none is provided
-switch nargin
-    case 1
+%set default argument values
+if nargin == 4
         %do nothing
-    otherwise
-        %if a file name was not passed in, use default test data
-        fName = 'MasterLiuPerformanceChar00.calc';
+else
+    %ignore columns filled with zeros by default
+    ignoreZ = true;
+    if nargin == 3
+        %do nothing else
+    else
+        %default dataFilter
+        dFilter = "";
+        if nargin == 2
+            %do nothing else
+        else
+            %default samplesize
+            sampleSize = 60;
+            if nargin == 1
+                %do nothing else            
+            else
+                %default dataset
+                fName = 'MasterLiuPerformanceChar00.calc';
+            end
+        end
+    end
 end 
 
 %import data from file name
@@ -132,7 +149,7 @@ figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
 C = 2; R = 2;
 %analyze individual channels / groups of channels
 N = size(fDATA,1);
-[PRDG, w] = periodogram(fDATA,rectwin(N),N,60);
+[PRDG, w] = periodogram(fDATA,rectwin(N),N,sampleSize);
 
 %debug
 % N
