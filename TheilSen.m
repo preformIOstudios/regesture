@@ -41,14 +41,27 @@ function [m, b] = TheilSen(data)
 %	- updated help
 %   - speed increase for 2D case
 %
-%
+% %%% d. allen December 2017 %%% 
+% edits d. allen December 2015:
+%   - added recursion for handling multiple data sets at once
 
 sz = size(data);
-if length(sz)~=2 || sz(1)<2
+if length(sz)<2 || sz(1)<2
     error('Expecting MxD data matrix with at least 2 observations.')
 end
 
-if sz(2)==2         % normal 2-D case
+if length(sz)>2 && sz(3) > 1
+    mArr = zeros(sz(3),1); bArr = zeros(sz(3),1);
+    for i=1:sz(3)
+        % accumulate slopes
+        [mArr(i), bArr(i)] = TheilSen(data(:,:,i));
+    end
+    m = mArr;
+    if nargout==2
+        b = bArr;
+    end
+
+elseif sz(2)==2         % normal 2-D case
     C = nan(sz(1));
     for i=1:sz(1)
         % accumulate slopes
