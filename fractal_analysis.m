@@ -14,17 +14,17 @@ else
         %do nothing else
     else
         %default dataFilter
-        dFilter = "";
+        dFilter = '';
         if nargin == 2
             %do nothing else
         else
             %default samplesize
-            sampleSize = 60;
+            sampleSize = 120;
             if nargin == 1
                 %do nothing else            
             else
                 %default dataset
-                fName = 'MasterLiuPerformanceChar00.calc';
+                fName = 'MasterLiuPerformanceALL_Char00_stripped.calc';
             end
         end
     end
