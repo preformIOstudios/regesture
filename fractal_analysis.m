@@ -173,7 +173,7 @@ N = size(fDATA,1);
 
     subplot(R,C,C*0+2);
     %"Least Squares" linear regression
-        title('log / log plot; "Least Squares" linear regression');
+        title('log/log plot | "Least Squares" lin reg');
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
         hold on; % add any enclosed plots to the same graph
@@ -221,7 +221,7 @@ N = size(fDATA,1);
   
     subplot(R,C,C*0+3);
     %"Theil-Sen" linear regression
-        title('log / log plot; "Theil-Sen" linear regression');
+        title('log/log plot | "Theil-Sen" lin reg');
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
 
@@ -257,7 +257,7 @@ N = size(fDATA,1);
 
     subplot(R,C,C*0+4);
     %< 1Hz "Least Squares" linear regression
-        title('< 1Hz log / log plot; "Least Squares" linear regression');
+        title('< 1Hz log / log plot; "Least Squares" lin reg');
 
         %remove values greater than zero
         mask = x<0;
@@ -285,7 +285,7 @@ N = size(fDATA,1);
         slopes = b(2, :);
         if numel(slopes) > 1
             histfit(slopes)
-            title('< 1Hz histfit("Least Squares" slopes)');
+            title('< 1Hz | histfit("Least Squares" slopes)');
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
@@ -293,7 +293,7 @@ N = size(fDATA,1);
         
     subplot(R,C,C*0+5);
     %< 1Hz "Theil-Sen" linear regression
-        title('< 1Hz log / log plot; "Theil-Sen" linear regression');
+        title('< 1Hz | log/log | "Theil-Sen" lin reg');
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
 
@@ -322,7 +322,7 @@ N = size(fDATA,1);
         slopes = BTS(2, :);
         if numel(slopes) > 1
             histfit(slopes)
-            title('< 1Hz histfit("Theil-Sen" slopes)');
+            title('< 1Hz | histfit("Theil-Sen" slopes)');
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
