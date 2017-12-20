@@ -261,11 +261,9 @@ N = size(fDATA,1);
 
         %remove values greater than zero
         mask = x<0;
-        x = x(mask);
-        y = y(mask);
-        fractColorSet = varycolor(size(x, 1));
+        x = reshape(x(mask),[],size(x,2));
+        y = reshape(y(mask),[],size(y,2));
             
-        set(gca, 'ColorOrder', fractColorSet, 'NextPlot', 'replacechildren');
         grid on;
         hold on; % add any enclosed plots to the same graph
             %calculate linear regression + yintercept
