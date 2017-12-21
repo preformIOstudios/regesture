@@ -1,4 +1,4 @@
-function [] = fractal_analysis( fName, sampleSize, dFilter, ignoreZ )
+function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ )
 
 %TODO: update function summary and explanation below
 %CREATE_RASTER Summary of this function goes here
@@ -24,14 +24,15 @@ else
                 %do nothing else            
             else
                 %default dataset
-                fName = 'MasterLiuPerformanceALL_Char00_stripped.calc';
+                file = 'calc_files\test\MasterLiuPerformanceALL_Char00_stripped.calc';
+                [fPath,fName,fExt] = fileparts(file);
             end
         end
     end
 end 
 
 %import data from file name
-DATA = load(fName);
+DATA = load(file);
 %set end, start, and cut points in the data
 e = size(DATA, 2);
 s = 1;    c = 337; %337 elems
@@ -128,13 +129,13 @@ R = 4; C = 3;
 
 %TODO: move this out to batch file
 %save out scaled log of data distances to an image
-imwrite(d, [fName, '_data.png']);
+imwrite(d, [path(fPath, fName), '_data.png']);
 %save out scaled log of filtered data distances to an image
-imwrite(fd, [fName, '_fdata.png']);
+imwrite(fd, [path(fPath, fName), '_fdata.png']);
 %save out scaled log of excluded data distances to an image
-imwrite(ed, [fName, '_edata.png']);
+imwrite(ed, [path(fPath, fName), '_edata.png']);
 %save out scaled image of error data to an image
-imwrite(error, [fName, '_error.png']);
+imwrite(error, [path(fPath, fName), '_error.png']);
 %---------------
 %TODO: save out figure
 %TODO: move above to its own function and call it here
