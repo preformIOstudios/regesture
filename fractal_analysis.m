@@ -14,17 +14,17 @@ else
         %do nothing else
     else
         %default dataFilter
-        dFilter = "";
+        dFilter = '';
         if nargin == 2
             %do nothing else
         else
             %default samplesize
-            sampleSize = 60;
+            sampleSize = 120;
             if nargin == 1
                 %do nothing else            
             else
                 %default dataset
-                fName = 'MasterLiuPerformanceChar00.calc';
+                fName = 'MasterLiuPerformanceALL_Char00_stripped.calc';
             end
         end
     end
@@ -173,7 +173,7 @@ N = size(fDATA,1);
 
     subplot(R,C,C*0+2);
     %"Least Squares" linear regression
-        title('log / log plot; "Least Squares" linear regression');
+        title('log/log plot | "Least Squares" lin reg');
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
         hold on; % add any enclosed plots to the same graph
@@ -221,7 +221,7 @@ N = size(fDATA,1);
   
     subplot(R,C,C*0+3);
     %"Theil-Sen" linear regression
-        title('log / log plot; "Theil-Sen" linear regression');
+        title('log/log plot | "Theil-Sen" lin reg');
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
 
@@ -257,15 +257,13 @@ N = size(fDATA,1);
 
     subplot(R,C,C*0+4);
     %< 1Hz "Least Squares" linear regression
-        title('< 1Hz log / log plot; "Least Squares" linear regression');
+        title('< 1Hz log / log plot; "Least Squares" lin reg');
 
         %remove values greater than zero
         mask = x<0;
-        x = x(mask);
-        y = y(mask);
-        fractColorSet = varycolor(size(x, 1));
+        x = reshape(x(mask),[],size(x,2));
+        y = reshape(y(mask),[],size(y,2));
             
-        set(gca, 'ColorOrder', fractColorSet, 'NextPlot', 'replacechildren');
         grid on;
         hold on; % add any enclosed plots to the same graph
             %calculate linear regression + yintercept
@@ -285,7 +283,7 @@ N = size(fDATA,1);
         slopes = b(2, :);
         if numel(slopes) > 1
             histfit(slopes)
-            title('< 1Hz histfit("Least Squares" slopes)');
+            title('< 1Hz | histfit("Least Squares" slopes)');
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
@@ -293,7 +291,7 @@ N = size(fDATA,1);
         
     subplot(R,C,C*0+5);
     %< 1Hz "Theil-Sen" linear regression
-        title('< 1Hz log / log plot; "Theil-Sen" linear regression');
+        title('< 1Hz | log/log | "Theil-Sen" lin reg');
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
 
@@ -322,7 +320,7 @@ N = size(fDATA,1);
         slopes = BTS(2, :);
         if numel(slopes) > 1
             histfit(slopes)
-            title('< 1Hz histfit("Theil-Sen" slopes)');
+            title('< 1Hz | histfit("Theil-Sen" slopes)');
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
