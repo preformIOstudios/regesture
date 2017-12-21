@@ -128,14 +128,14 @@ R = 4; C = 3;
 
 
 %TODO: move this out to batch file
-%save out scaled log of data distances to an image
-imwrite(d, [path(fPath, fName), '_data.png']);
-%save out scaled log of filtered data distances to an image
-imwrite(fd, [path(fPath, fName), '_fdata.png']);
-%save out scaled log of excluded data distances to an image
-imwrite(ed, [path(fPath, fName), '_edata.png']);
-%save out scaled image of error data to an image
-imwrite(error, [path(fPath, fName), '_error.png']);
+% %save out scaled log of data distances to an image
+imwrite(d, fullfile(fPath,[fName '_data.png']));
+% %save out scaled log of filtered data distances to an image
+imwrite(d, fullfile(fPath,[fName '_fdata.png']));
+% %save out scaled log of excluded data distances to an image
+imwrite(d, fullfile(fPath,[fName '_edata.png']));
+% %save out scaled image of error data to an image
+imwrite(d, fullfile(fPath,[fName '_error.png']));
 %---------------
 %TODO: save out figure
 %TODO: move above to its own function and call it here
