@@ -24,12 +24,15 @@ else
                 %do nothing else            
             else
                 %default dataset
-                file = 'calc_files\test\MasterLiuPerformanceALL_Char00_stripped.calc';
-                [fPath,fName,fExt] = fileparts(file);
+                file = 'calc_files/test/MasterLiuPerformanceALL_Char00_stripped.calc';
             end
         end
     end
 end 
+%set private variable values
+file = fullfile(file);
+[fPath,fName,fExt] = fileparts(file);
+figfmt = 'png';
 
 %import data from file name
 DATA = load(file);
@@ -137,13 +140,19 @@ imwrite(d, fullfile(fPath,[fName '_edata.png']));
 % %save out scaled image of error data to an image
 imwrite(d, fullfile(fPath,[fName '_error.png']));
 %---------------
-%TODO: save out figure
-%TODO: move above to its own function and call it here
+%save out figure
+fig = gcf;
+fig.Position = [0 0 1276 705];
+saveas(fig,fullfile(fPath,[fName '_fig' num2str(fig.Number)]),figfmt);
+%TODO: move analysis above to its own function and call it here instead?
 
 
 %---------------
 %power / frequency analysis
 %reference -- https://www.mathworks.com/help/signal/ug/power-spectral-density-estimates-using-fft.html?requestedDomain=www.mathworks.com
+%---------------
+%TODO: move power / frequency analysis to its own function and call it here
+%instead
 %---------------
 figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
 R = 2; C = 5;
@@ -331,9 +340,10 @@ N = size(fDATA,1);
 %    - need to consider different methodologies
 %create a 2D image to represent entire dataset (channels on x, p/f values on y?)
 %save out relevant image(s) for paper
-%save out figure for reference
-%---------------
-%TODO: move power / frequency analysis to its own function and call it here
-%instead
+
+%save out figure
+fig = gcf;
+fig.Position = [0 0 1276 705];
+saveas(fig,fullfile(fPath,[fName '_fig' num2str(fig.Number)]),figfmt);
 
 end
