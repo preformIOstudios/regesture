@@ -222,12 +222,17 @@ N = size(fDATA,1);
     subplot(R,C,C*1+2);
     %"Least Squares" slope distribution
         slopes = b(2, :);
+        hold on
         if numel(slopes) > 1
-            histfit(slopes)
+            hf = histfit(slopes);
+            pd = fitdist(slopes,'Normal');
+            %add a thick line for mu
+            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
             title('histfit("Least Squares" slopes)');
         else
             error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
+        hold off
   
     subplot(R,C,C*0+3);
     %"Theil-Sen" linear regression
@@ -259,7 +264,10 @@ N = size(fDATA,1);
     %"Theil-Sen" slope distribution
         slopes = BTS(2, :);
         if numel(slopes) > 1
-            histfit(slopes)
+            hf = histfit(slopes);
+            pd = fitdist(slopes,'Normal');
+            %add a thick line for mu
+            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
             title('histfit("Theil-Sen" slopes)');
         else
             error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
@@ -292,7 +300,10 @@ N = size(fDATA,1);
     %< 1Hz "Least Squares" slope distribution
         slopes = b(2, :);
         if numel(slopes) > 1
-            histfit(slopes)
+            hf = histfit(slopes);
+            pd = fitdist(slopes,'Normal');
+            %add a thick line for mu
+            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
             title('< 1Hz | histfit("Least Squares" slopes)');
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
@@ -329,7 +340,10 @@ N = size(fDATA,1);
     %< 1Hz "Theil-Sen" slope distribution
         slopes = BTS(2, :);
         if numel(slopes) > 1
-            histfit(slopes)
+            hf = histfit(slopes);
+            pd = fitdist(slopes,'Normal');
+            %add a thick line for mu
+            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
             title('< 1Hz | histfit("Theil-Sen" slopes)');
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
