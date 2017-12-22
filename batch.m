@@ -1,15 +1,21 @@
 %TODO:
-%     create a time-stamped directory to save out analysis files
-%     turn filenames into an array
-%     capture figures and data for output to analysis table
-%          time to calculate
-%          dimensions of data (filtered and unfiltered)
-%          figures
-%          self-similarity image
-%          slopes analysis (mean, average, spread, etc.)
-%     turn filenames into an array that can be fed into the function
-%     include sample size and other related arguments so that any data type can be handed in
+%   select directory to analyze
+%   turn contained calc filenames into an array
+%   create a time-stamped directory to save out analysis files
+%       directory structure should match data directory
+%   capture figures and data for output to analysis report
+%       time to calculate
+%       dimensions of data (filtered and unfiltered)
+%       figures
+%       self-similarity image
+%       slopes analysis (mean, average, spread, etc.)
 
+%import report generation libraries
+%see more information at ? https://www.mathworks.com/help/rptgen/ug/_mw_bf8ea6ab-5b87-44fd-a82e-c716ff17edd3.html
+import mlreportgen.report.* 
+import mlreportgen.dom.* 
+
+%do these automatically
 fractal_analysis('calc_files/africa/africa_down_Char00.calc');
 fractal_analysis('calc_files/africa/africa_left_Char00.calc');
 fractal_analysis('calc_files/africa/africa_right_Char00.calc');
