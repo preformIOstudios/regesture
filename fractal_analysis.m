@@ -177,13 +177,13 @@ N = size(fDATA,1);
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
         hold on; % add any enclosed plots to the same graph
-            title('periodogram = plot(w, 10*log10(PRDG))');
+            title('periodogram');
             linPRDG = plot(w, 10*log10(PRDG));
         hold off;
 
     subplot(R,C,C*0+2);
     %"Least Squares" linear regression
-        title('log/log plot | "Least Squares" lin reg');
+        title({'log/log plot';'"Least Squares" lin reg'});
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
         hold on; % add any enclosed plots to the same graph
@@ -221,22 +221,25 @@ N = size(fDATA,1);
         
     subplot(R,C,C*1+2);
     %"Least Squares" slope distribution
-        slopes = b(2, :);
-        hold on
+        slopes = b(2, :)';
         if numel(slopes) > 1
-            hf = histfit(slopes);
-            pd = fitdist(slopes,'Normal');
-            %add a thick line for mu
-            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
-            title('histfit("Least Squares" slopes)');
+            hold on;
+                hf = histfit(slopes);
+                title('histfit("Least Squares" slopes)');
+                %add a line and label for mu
+                pd = fitdist(slopes,'Normal');
+                ylims = ylim;
+                textY = interp1(ylim, 1.9);
+                plot ([pd.mu pd.mu], ylims);
+                text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+            hold off;
         else
             error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
-        hold off
   
     subplot(R,C,C*0+3);
     %"Theil-Sen" linear regression
-        title('log/log plot | "Theil-Sen" lin reg');
+        title({'log/log plot';'"Theil-Sen" lin reg'});
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
 
@@ -262,20 +265,25 @@ N = size(fDATA,1);
         
     subplot(R,C,C*1+3);
     %"Theil-Sen" slope distribution
-        slopes = BTS(2, :);
+        slopes = BTS(2, :)';
         if numel(slopes) > 1
-            hf = histfit(slopes);
-            pd = fitdist(slopes,'Normal');
-            %add a thick line for mu
-            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
-            title('histfit("Theil-Sen" slopes)');
+            hold on;
+                hf = histfit(slopes);
+                title('histfit("Theil-Sen" slopes)');
+                %add a line and label for mu
+                pd = fitdist(slopes,'Normal');
+                ylims = ylim;
+                textY = interp1(ylim, 1.9);
+                plot ([pd.mu pd.mu], ylims);
+                text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+            hold off;
         else
             error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
 
     subplot(R,C,C*0+4);
     %< 1Hz "Least Squares" linear regression
-        title('< 1Hz log / log plot; "Least Squares" lin reg');
+        title({'< 1Hz log / log plot';'"Least Squares" lin reg'});
 
         %remove values greater than zero
         mask = x<0;
@@ -298,13 +306,18 @@ N = size(fDATA,1);
         
     subplot(R,C,C*1+4);
     %< 1Hz "Least Squares" slope distribution
-        slopes = b(2, :);
+        slopes = b(2, :)';
         if numel(slopes) > 1
-            hf = histfit(slopes);
-            pd = fitdist(slopes,'Normal');
-            %add a thick line for mu
-            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
-            title('< 1Hz | histfit("Least Squares" slopes)');
+            hold on;
+                hf = histfit(slopes);
+                title({'< 1Hz';'histfit("Least Squares" slopes)'});
+                %add a line and label for mu
+                pd = fitdist(slopes,'Normal');
+                ylims = ylim;
+                textY = interp1(ylim, 1.9);
+                plot ([pd.mu pd.mu], ylims);
+                text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+            hold off;
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
@@ -312,7 +325,7 @@ N = size(fDATA,1);
         
     subplot(R,C,C*0+5);
     %< 1Hz "Theil-Sen" linear regression
-        title('< 1Hz | log/log | "Theil-Sen" lin reg');
+        title({'< 1Hz | log/log';'"Theil-Sen" lin reg'});
         set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
         grid on;
 
@@ -338,13 +351,18 @@ N = size(fDATA,1);
         
     subplot(R,C,C*1+5);
     %< 1Hz "Theil-Sen" slope distribution
-        slopes = BTS(2, :);
+        slopes = BTS(2, :)';
         if numel(slopes) > 1
-            hf = histfit(slopes);
-            pd = fitdist(slopes,'Normal');
-            %add a thick line for mu
-            plot ([pd.mu pd.mu], ylim,'n-', 'LineWidth',5);
-            title('< 1Hz | histfit("Theil-Sen" slopes)');
+            hold on;
+                hf = histfit(slopes);
+                title({'< 1Hz';'histfit("Theil-Sen" slopes)'});
+                %add a line and label for mu
+                pd = fitdist(slopes,'Normal');
+                ylims = ylim;
+                textY = interp1(ylim, 1.9);
+                plot ([pd.mu pd.mu], ylims);
+                text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+            hold off;
         else
             warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
         end
