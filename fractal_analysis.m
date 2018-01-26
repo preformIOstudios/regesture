@@ -1,4 +1,4 @@
-function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, fractalDim )
+function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim )
 
 %TODO: update function summary and explanation below
 %CREATE_RASTER Summary of this function goes here
@@ -14,7 +14,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, 
             %do nothing else
         else
             %ignore columns filled with zeros by default
-            similarity = false;
+            calcSelfSim = false;
             if nargin == 4
                 %do nothing else
             else
@@ -70,7 +70,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, 
     %---------------
     %create self-similarity matrix
     %---------------
-    if (similarity == true)
+    if (calcSelfSim == true)
         figure('NumberTitle', 'off', 'Name', [fName ' Self-Similarity Graph']);
         R = 4; C = 3;
             %get self-similarity graphs
