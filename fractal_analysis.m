@@ -167,9 +167,15 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, 
     %TODO: move power / frequency analysis to its own function and call it here
     %instead
     %---------------
-    if (fractalDim == 1)
+    if (fractalDim ~= 0)
+        if fractalDim == 1
+            method = '"Least Squares"';
+        else
+            method = '"Theil-Sen"';
+        end
+        
         figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
-        R = 2; C = 5;
+        R = 2; C = 4;
         %analyze individual channels / groups of channels
         N = size(fDATA,1);
         [PRDG, w] = periodogram(fDATA,rectwin(N),N,sampleSize);
@@ -182,30 +188,29 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, 
         %plot analysis
             subplot(R,C,C*0+1);
             %fDATA
+                title('fDATA');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 plot(fDATA);
-                title('fDATA');
 
             subplot(R,C,C*1+1);
             %periodogram
+                title('fDATA periodogram (PRDG)');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    title('periodogram');
-                    linPRDG = plot(w, 10*log10(PRDG));
+                    linPRDG = plot(w, 10*log10(PRDG), 'LineStyle', ':');
                 hold off;
 
-            subplot(R,C,C*0+2);
-            %"Least Squares" linear regression
-                title({'log/log plot';'"Least Squares" lin reg'});
+            subplot(R,C,C*1+2);
+            %log/log plot
+                title('PRDG log/log plot');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    llPRDG = plot(log(w), log(PRDG));
+                    llPRDG = plot(log(w), log(PRDG), 'LineStyle', ':');
                     % TODO: why is this different?
                     %loglog(w, PRDG);
-                    %set PRDG plot style
-                    set(llPRDG, 'LineStyle', ':');
+
                     %capture X and Y data for linear regression analysis
                     if size(fDATA, 2) > 1
                         x = cell2mat(get(llPRDG, 'XData'))';
@@ -214,162 +219,96 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, 
                         x = get(llPRDG, 'XData')';
                         y = get(llPRDG, 'YData')';
                     end
-                    %set Inf values to nearest value
+                    %set Inf values to nearest value + difference to next nearest value
+                    % TODO: find a more accurate solution (remove inf data?)
                     maxX = max(x(x<Inf));
                     minX = min(x(x>-Inf));
                     dMax = maxX - max(x(x<maxX));
                     dMin = minX - min(x(x>minX));
                     x(x == Inf) = maxX + dMax;
                     x(x == -Inf) = minX + dMin;
-
-                    %calculate linear regression + yintercept
-                    format long
-                    n = size(x,1);
-                    X = [ones(n,1) x];
-                    b = X\y;
-
-                    %plot linear regression + y intercept as solid lines
-                    yCalc = X*b;
-                    plot(x,yCalc);
                 hold off;
-
-            subplot(R,C,C*1+2);
-            %"Least Squares" slope distribution
-                slopes = b(2, :)';
-                if numel(slopes) > 1
-                    hold on;
-                        hf = histfit(slopes);
-                        title('histfit("Least Squares" slopes)');
-                        %add a line and label for mu
-                        pd = fitdist(slopes,'Normal');
-                        ylims = ylim;
-                        textY = interp1(ylim, 1.9);
-                        plot ([pd.mu pd.mu], ylims);
-                        text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
-                    hold off;
-                else
-                    error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
-                end
-
-            subplot(R,C,C*0+3);
-            %"Theil-Sen" linear regression
-                title({'log/log plot';'"Theil-Sen" lin reg'});
+            
+            subplot(R,C,C*0+2);
+            %<1 Hz log/log plot
+                title('<1Hz PRDG log/log plot');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
-                grid on;
-
-                format long
-                n = size(x,1);
-                X = [ones(n,1) x];
-                Bhat = X\y;
-                yCalcBhat = X*Bhat;
-                concat = [x y];
-                unzip = reshape(concat, numel(x), []);
-                rezip = reshape(unzip', 2, n, []);
-                data = permute(rezip, [2,1,3]);
-                data(1) = data(1);
-                [m2, b2] = TheilSen(data);
-                BTS = [m2'; b2'; repmat(zeros(1,size(data,3)),size(X,2)-2,1)];
-                yCalcTS = X*BTS;
-
-                hold on;
-                    plot(x,yCalcBhat,'--')
-                    plot(x,yCalcTS, '-')
-                    plot(x,y,':')
-                hold off;
-
-            subplot(R,C,C*1+3);
-            %"Theil-Sen" slope distribution
-                slopes = BTS(2, :)';
-                if numel(slopes) > 1
-                    hold on;
-                        hf = histfit(slopes);
-                        title('histfit("Theil-Sen" slopes)');
-                        %add a line and label for mu
-                        pd = fitdist(slopes,'Normal');
-                        ylims = ylim;
-                        textY = interp1(ylim, 1.9);
-                        plot ([pd.mu pd.mu], ylims);
-                        text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
-                    hold off;
-                else
-                    error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
-                end
-
-            subplot(R,C,C*0+4);
-            %< 1Hz "Least Squares" linear regression
-                title({'< 1Hz log / log plot';'"Least Squares" lin reg'});
 
                 %remove values greater than zero
                 mask = x<0;
-                x = reshape(x(mask),[],size(x,2));
-                y = reshape(y(mask),[],size(y,2));
+                xNeg = reshape(x(mask),[],size(x,2));
+                yNeg = reshape(y(mask),[],size(y,2));
 
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    %calculate linear regression + yintercept
-                    format long
-                    n = size(x,1);
-                    X = [ones(n,1) x];
-                    b = X\y;
-
-                    %plot linear regression + y intercept as solid lines
-                    yCalc = X*b;
-                    plot(x,y,':');
-                    plot(x,yCalc,'-');
+                    %plot reduced data set 
+                    plot(xNeg,yNeg, 'LineStyle', ':');
                 hold off;
 
-            subplot(R,C,C*1+4);
-            %< 1Hz "Least Squares" slope distribution
-                slopes = b(2, :)';
-                if numel(slopes) > 1
-                    hold on;
-                        hf = histfit(slopes);
-                        title({'< 1Hz';'histfit("Least Squares" slopes)'});
-                        %add a line and label for mu
-                        pd = fitdist(slopes,'Normal');
-                        ylims = ylim;
-                        textY = interp1(ylim, 1.9);
-                        plot ([pd.mu pd.mu], ylims);
-                        text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
-                    hold off;
-                else
-                    warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
-                end
-
-
-            subplot(R,C,C*0+5);
-            %< 1Hz "Theil-Sen" linear regression
-                title({'< 1Hz | log/log';'"Theil-Sen" lin reg'});
+            subplot(R,C,C*0+3);
+            %<1Hz data lin reg
+                title(['<1Hz ' method ' lin reg']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
+                hold on; % add any enclosed plots to the same graph
 
-                format long
-                n = size(x,1);
-                X = [ones(n,1) x];
-                Bhat = X\y;
-                yCalcBhat = X*Bhat;
-                concat = [x y];
-                unzip = reshape(concat, numel(x), []);
-                rezip = reshape(unzip', 2, n, []);
-                data = permute(rezip, [2,1,3]);
-                data(1) = data(1);
-                [m2, b2] = TheilSen(data);
-                BTS = [m2'; b2'; repmat(zeros(1,size(data,3)),size(X,2)-2,1)];
-                yCalcTS = X*BTS;
+                    %re-plot underlying data
+                    plot(xNeg, yNeg, 'LineStyle', ':');
 
-                hold on;
-                    plot(x,yCalcBhat,'--')
-                    plot(x,yCalcTS, '-')
-                    plot(x,y,':')
+                    %calculate linear regression + yintercept
+                    [yNegCalc, bNeg] = linreg(xNeg,yNeg, fractalDim);
+
+                    %plot linear regression + y intercept as solid lines
+                    plot(xNeg,yNegCalc);
+                hold off;
+                
+            subplot(R,C,C*1+3);
+            %all data lin reg     
+                title(['all Hz ' method ' lin reg']);
+                set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
+                grid on;
+                hold on; % add any enclosed plots to the same graph
+
+                    %re-plot underlying data
+                    plot(x, y, 'LineStyle', ':');
+                    
+                    %calculate linear regression + yintercept
+                    [yCalc, b] = linreg(x,y, fractalDim);
+
+                    %plot linear regression + y intercept as solid lines
+                    plot(x,yCalc);
                 hold off;
 
-            subplot(R,C,C*1+5);
-            %< 1Hz "Theil-Sen" slope distribution
-                slopes = BTS(2, :)';
+
+            subplot(R,C,C*0+4);
+            %<1Hz fDim (based on slope dist)
+                title({'<1Hz fDim';['histfit(' method ' slopes)']});
+                
+                slopesNeg = bNeg(2, :)';
+                    
+                if numel(slopesNeg) > 1
+                    hold on;
+                        hfNeg = histfit(slopesNeg);
+                        %add a line and label for mu
+                        pdNeg = fitdist(slopesNeg,'Normal');
+                        ylimsNeg = ylim;
+                        textYNeg = interp1(ylimsNeg, 1.9);
+                        plot ([pdNeg.mu pdNeg.mu], ylimsNeg);
+                        text(pdNeg.mu,textYNeg,{['\leftarrow ' num2str(pdNeg.mu)]; [' f dim = ' num2str((2-pdNeg.mu)/2)]});
+                    hold off;
+                else
+                    error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesNeg)); 
+                end
+            
+            subplot(R,C,C*1+4);
+            %all Hz fDim (based on slope dist)
+                title({'all Hz fDim';['histfit(' method ' slopes)']});
+
+                slopes = b(2, :)';
+                
                 if numel(slopes) > 1
                     hold on;
                         hf = histfit(slopes);
-                        title({'< 1Hz';'histfit("Theil-Sen" slopes)'});
                         %add a line and label for mu
                         pd = fitdist(slopes,'Normal');
                         ylims = ylim;
@@ -378,9 +317,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, similarity, 
                         text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
                     hold off;
                 else
-                    warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
+                    error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
                 end
-
 
         %composit those into a single p/f graph for entire dataset
         %    - need to consider different methodologies
