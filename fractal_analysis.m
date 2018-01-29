@@ -198,7 +198,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    linPRDG = plot(w, 10*log10(PRDG), 'LineStyle', ':');
+                    linPRDG = plot(w, 10*log10(PRDG), '-');
                 hold off;
 
             subplot(R,C,C*1+2);
@@ -207,7 +207,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    llPRDG = plot(log(w), log(PRDG), 'LineStyle', ':');
+                    llPRDG = plot(log(w), log(PRDG), '-');
                     % TODO: why is this different?
                     %loglog(w, PRDG);
 
@@ -242,7 +242,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 grid on;
                 hold on; % add any enclosed plots to the same graph
                     %plot reduced data set 
-                    plot(xNeg,yNeg, 'LineStyle', ':');
+                    plot(xNeg,yNeg, '-');
                 hold off;
 
             subplot(R,C,C*0+3);
@@ -253,7 +253,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold on; % add any enclosed plots to the same graph
 
                     %re-plot underlying data
-                    plot(xNeg, yNeg, 'LineStyle', ':');
+                    plot(xNeg, yNeg, ':');
 
                     %calculate linear regression + yintercept
                     [yNegCalc, bNeg] = linreg(xNeg,yNeg, fractalDim);
@@ -270,7 +270,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold on; % add any enclosed plots to the same graph
 
                     %re-plot underlying data
-                    plot(x, y, 'LineStyle', ':');
+                    plot(x, y, ':');
                     
                     %calculate linear regression + yintercept
                     [yCalc, b] = linreg(x,y, fractalDim);
