@@ -201,9 +201,9 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    llPRDG = plot(log(w), log(PRDG), '-');
-                    % TODO: why is this different?
-                    %loglog(w, PRDG);
+                    llPRDG = plot(10*log10(w), 10*log10(PRDG), '-');
+                    %TODO: why is this different?
+                    % llPRDG = loglog(w, PRDG);
 
                     %capture X and Y data for linear regression analysis
                     if size(fDATA, 2) > 1
