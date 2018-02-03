@@ -1,38 +1,26 @@
-function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim )
+function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass )
 
 %TODO: update function summary and explanation below
 %CREATE_RASTER Summary of this function goes here
 %   Detailed explanation goes here
 
     %set default argument values
-    if nargin == 6
-            %do nothing
-    else
-        %ignore columns filled with zeros by default
-        fractalDim = 0;
-        if nargin == 5
-            %do nothing else
-        else
-            %ignore columns filled with zeros by default
+    if nargin < 6
+        %calculate fractal dimension with least squares linear regression
+        fractalDim = 1;
+        if nargin < 5
+            %do not calculate self similarity graphs
             calcSelfSim = false;
-            if nargin == 4
-                %do nothing else
-            else
+            if nargin < 4
                 %ignore columns filled with zeros by default
                 ignoreZ = true;
-                if nargin == 3
-                    %do nothing else
-                else
+                if nargin < 3
                     %default dataFilter
                     dFilter = '';
-                    if nargin == 2
-                        %do nothing else
-                    else
+                    if nargin < 2
                         %default samplesize
                         sampleSize = 120;
-                        if nargin == 1
-                            %do nothing else            
-                        else
+                        if nargin < 1
                             %default dataset
                             file = 'calc_files/test/MasterLiuPerformanceALL_Char00_stripped.calc';
                         end
@@ -41,10 +29,15 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
             end 
         end
     end
+    if nargin < 7
+        HzLPass = sampleSize / 2;
+    end
+    
     %set private variable values
     file = fullfile(file);
     [fPath,fName,fExt] = fileparts(file);
     figfmt = 'png';
+    dName = replace(fName,'_', '\_'); %avoid accidental subscript formatting in titles later
 
     %import data from file name
     DATA = load(file);
@@ -188,7 +181,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         %plot analysis
             subplot(R,C,C*0+1);
             %fDATA
-                title('fDATA');
+                title(['fDATA = "' dName '"']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 plot(fDATA);
 
@@ -230,36 +223,36 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold off;
             
             subplot(R,C,C*0+2);
-            %<1 Hz log/log plot
-                title('<1Hz PRDG log/log plot');
+            %<HzLPass log/log plot
+                title(['<' num2str(HzLPass) 'Hz PRDG log/log plot']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
 
                 %remove values greater than zero
-                mask = x<0;
-                xNeg = reshape(x(mask),[],size(x,2));
-                yNeg = reshape(y(mask),[],size(y,2));
+                mask = x2<10*log10(HzLPass);
+                xLPass = reshape(x2(mask),[],size(x2,2));
+                yLPass = reshape(y2(mask),[],size(y2,2));
 
                 grid on;
                 hold on; % add any enclosed plots to the same graph
                     %plot reduced data set 
-                    plot(xNeg,yNeg, '-');
+                    plot(xLPass,yLPass, '-');
                 hold off;
 
             subplot(R,C,C*0+3);
-            %<1Hz data lin reg
-                title(['<1Hz ' method ' lin reg']);
+            %<HzLPass data lin reg
+                title(['<' num2str(HzLPass) 'Hz ' method ' lin reg']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
 
                     %re-plot underlying data
-                    plot(xNeg, yNeg, ':');
+                    plot(xLPass, yLPass, ':');
 
                     %calculate linear regression + yintercept
-                    [yNegCalc, bNeg] = linreg(xNeg,yNeg, fractalDim);
+                    [yLPassCalc, bLPass] = linreg(xLPass,yLPass, fractalDim);
 
                     %plot linear regression + y intercept as solid lines
-                    plot(xNeg,yNegCalc);
+                    plot(xLPass,yLPassCalc);
                 hold off;
                 
             subplot(R,C,C*1+3);
@@ -281,20 +274,24 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
 
             subplot(R,C,C*0+4);
-            %<1Hz fDim (based on slope dist)
-                title({'<1Hz fDim';['histfit(' method ' slopes)']});
+            %<HzLPass fDim (based on slope dist)
+                title({['<' num2str(HzLPass) 'Hz fDim'];['histfit(' method ' slopes)']});
                 
-                slopesNeg = bNeg(2, :)';
+                if min(size(bLPass)) ~= 0 
+                    slopesLPass = bLPass(2, :)';
+                else
+                    slopesLPass = [];
+                end
                     
-                if numel(slopesNeg) > 1
+                if numel(slopesLPass) > 1
                     hold on;
-                        hfNeg = histfit(slopesNeg);
+                        hfLPass = histfit(slopesLPass);
                         %add a line and label for mu
-                        pdNeg = fitdist(slopesNeg,'Normal');
-                        ylimsNeg = ylim;
-                        textYNeg = interp1(ylimsNeg, 1.9);
-                        plot ([pdNeg.mu pdNeg.mu], ylimsNeg);
-                        text(pdNeg.mu,textYNeg,{['\leftarrow ' num2str(pdNeg.mu)]; [' f dim = ' num2str((2-pdNeg.mu)/2)]});
+                        pdLPass = fitdist(slopesLPass,'Normal');
+                        ylimsLPass = ylim;
+                        textYLPass = interp1(ylimsLPass, 1.9);
+                        plot ([pdLPass.mu pdLPass.mu], ylimsLPass);
+                        text(pdLPass.mu,textYLPass,{['\leftarrow ' num2str(pdLPass.mu)]; [' f dim = ' num2str((2-pdLPass.mu)/2)]});
                     hold off;
                 else
                     error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesNeg)); 
