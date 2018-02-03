@@ -2,6 +2,14 @@ function [yCalc, b] = linreg(x,y, method)
 %LINREG Summary of this function goes here
 %   Detailed explanation goes here
 %TODO: use an enum for regression method
+    
+    %handle cases where there is no data
+    sz = size(x);
+    if length(sz)<2 | min(sz) ==0
+        yCalc = []
+        b = []
+        return
+    end
 
     %calculate linear regression + yintercept
     format long
