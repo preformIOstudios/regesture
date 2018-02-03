@@ -43,7 +43,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     DATA = load(file);
     %set end, start, and cut points in the data
     e = size(DATA, 2);
-    s = 1;    c = 337; %337 elems
+    s = 1;    c = e; %all elems
+    % s = 1;    c = 337; %337 elems
     % s = 15;   c = 21; %7 elems
     % s = 15;   c = 20; %6 elems
     % s = 15;   c = 17; %3 elems
@@ -294,7 +295,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                         text(pdLPass.mu,textYLPass,{['\leftarrow ' num2str(pdLPass.mu)]; [' f dim = ' num2str((2-pdLPass.mu)/2)]});
                     hold off;
                 else
-                    error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesNeg)); 
+                    warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesLPass)); 
                 end
             
             subplot(R,C,C*1+4);
@@ -314,7 +315,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                         text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
                     hold off;
                 else
-                    error('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
+                    warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
                 end
 
         %composit those into a single p/f graph for entire dataset
