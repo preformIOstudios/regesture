@@ -15,7 +15,64 @@
 import mlreportgen.report.* 
 import mlreportgen.dom.* 
 
-%do these automatically
+%%
+%generate simple noise files
+generateNoiseCalc('purple', 120, 3);
+generateNoiseCalc('blue', 120, 3);
+generateNoiseCalc('white', 120, 3);
+generateNoiseCalc('pink', 120, 3);
+generateNoiseCalc('brown', 120, 3);
+
+%% 
+%generate complex noise files (ground truth)
+generateNoiseCalc('purple', 120 * 60 * 5, 3);
+generateNoiseCalc('blue', 120 * 60 * 5, 3);
+generateNoiseCalc('white', 120 * 60 * 5, 3);
+generateNoiseCalc('pink', 120 * 60 * 5, 3);
+generateNoiseCalc('brown', 120 * 60 * 5, 3);
+
+%%
+%run fractal analysis on simple noise files
+%fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim )
+close all;
+fractal_analysis('calc_files/test/whiteNoise_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/whiteNoise_120x3.calc', 120, false, false, false, 2);
+close all;
+fractal_analysis('calc_files/test/blueNoise_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/blueNoise_120x3.calc', 120, false, false, false, 2);
+close all;
+fractal_analysis('calc_files/test/purpleNoise_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/purpleNoise_120x3.calc', 120, false, false, false, 2);
+close all;
+fractal_analysis('calc_files/test/pinkNoise_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/pinkNoise_120x3.calc', 120, false, false, false, 2);
+close all;
+fractal_analysis('calc_files/test/brownNoise_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/brownNoise_120x3.calc', 120, false, false, false, 2);
+close all;
+
+%%
+%run fractal analysis on complex noise files
+close all;
+fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
+fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+close all;
+fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
+fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+close all;
+fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
+fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+close all;
+fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
+fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+close all;
+fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
+fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+close all;
+
+%%
+%run fractal analysis on dance files from MITHA2017
+
 fractal_analysis('calc_files/africa/africa_down_Char00.calc');
 fractal_analysis('calc_files/africa/africa_left_Char00.calc');
 fractal_analysis('calc_files/africa/africa_right_Char00.calc');
