@@ -54,20 +54,20 @@ close all;
 %%
 %run fractal analysis on complex noise files
 close all;
-fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
-fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
-fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
-fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
-fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 1, 0.01);
-fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 2, 0.01);
+fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
 
 %%

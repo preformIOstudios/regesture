@@ -32,6 +32,9 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     if nargin < 7
         HzLPass = sampleSize / 2;
     end
+    if HzLPass == 0
+        error(['HzLPass should be set to values > 0Hz. HzLPass = ' num2str(HzLPass)]);
+    end
     
     %set private variable values
     file = fullfile(file);
