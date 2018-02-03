@@ -213,14 +213,9 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                         x = get(llPRDG, 'XData')';
                         y = get(llPRDG, 'YData')';
                     end
-                    %set Inf values to nearest value + difference to next nearest value
-                    % TODO: find a more accurate solution (remove inf data?)
-                    maxX = max(x(x<Inf));
-                    minX = min(x(x>-Inf));
-                    dMax = maxX - max(x(x<maxX));
-                    dMin = minX - min(x(x>minX));
-                    x(x == Inf) = maxX + dMax;
-                    x(x == -Inf) = minX + dMin;
+                    %ignore Inf values
+                    x2 = x(2:end,:);
+                    y2 = y(2:end,:);
                 hold off;
             
             subplot(R,C,C*0+2);
@@ -264,13 +259,13 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold on; % add any enclosed plots to the same graph
 
                     %re-plot underlying data
-                    plot(x, y, ':');
+                    plot(x2, y2, ':');
                     
                     %calculate linear regression + yintercept
-                    [yCalc, b] = linreg(x,y, fractalDim);
+                    [yCalc, b] = linreg(x2,y2, fractalDim);
 
                     %plot linear regression + y intercept as solid lines
-                    plot(x,yCalc);
+                    plot(x2,yCalc);
                 hold off;
 
 
