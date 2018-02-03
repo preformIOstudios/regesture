@@ -81,7 +81,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
             %calculate distance contribution of excluded data
             format long
             error1 = abs(D-fD);
-            error = error1 / max(error1(:));
+            errorImg = error1 / max(error1(:));
 
             %display image of scaled log of distance matrix
             subplot(R,C,C*0+1);
@@ -133,7 +133,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
             %display image of error data distance matrix
             subplot(R,C,C*3+1);
-                imshow(error, 'colormap', gray);
+                imshow(errorImg, 'colormap', gray);
                 title('Error Image [ scaled ]');
 
 
