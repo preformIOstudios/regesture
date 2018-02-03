@@ -46,8 +46,11 @@ function [m, b] = TheilSen(data)
 %   - added recursion for handling multiple data sets at once
 
 sz = size(data);
-if length(sz)<2 || sz(1)<2
-    error('Expecting MxD data matrix with at least 2 observations.')
+if length(sz)<2 | min(sz) ==0  
+    warning('Expecting MxD data matrix with at least 2 observations.')
+    m = [];
+    b = [];
+    return
 end
 
 if length(sz)>2 && sz(3) > 1
