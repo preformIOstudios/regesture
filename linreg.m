@@ -3,7 +3,7 @@ function [yCalc, b] = linreg(x,y, method)
 %   Detailed explanation goes here
 %TODO: use an enum for regression method
 
-%calculate linear regression + yintercept
+    %calculate linear regression + yintercept
     format long
     n = size(x,1);
     X = [ones(n,1) x];
@@ -19,7 +19,6 @@ function [yCalc, b] = linreg(x,y, method)
         unzip = reshape(concat, numel(x), []);
         rezip = reshape(unzip', 2, n, []);
         data = permute(rezip, [2,1,3]);
-        data(1) = data(1); %TODO: why is this here?
         [mTS, bTS] = TheilSen(data);
         b = [bTS'; mTS'; repmat(zeros(1,size(data,3)),size(X,2)-2,1)];
         yCalc = X*b;
