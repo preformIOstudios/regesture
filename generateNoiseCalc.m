@@ -40,7 +40,7 @@ switch nType
             nType = 'purple';
         end
     otherwise
-        %TODO: 
+        %TODO:
         %test for custom numeric -2 > value < 2 and set type to 'custom<pow>'
         %otherwise: throw an error
 end
@@ -53,10 +53,9 @@ rng default;
 nData = cn();
 
 %initialize filename
-fName = fullfile(outDir, [nType 'Noise_' num2str(nSamp) 'x' num2str(nChan) '.calc']);
-%TODO: include — timestamp? randmethod? randseed?
+fName = fullfile(outDir, ['noise_' nType '_' num2str(nSamp) 'x' num2str(nChan) '.calc']);
+%TODO: include ï¿½ timestamp? randmethod? randseed?
 %TODO: save out calc file
 save(fName, 'nData', '-ascii', '-tabs');
 
 end
-

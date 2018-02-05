@@ -11,9 +11,9 @@
 %       slopes analysis (mean, average, spread, etc.)
 
 %import report generation libraries
-%see more information at ? https://www.mathworks.com/help/rptgen/ug/_mw_bf8ea6ab-5b87-44fd-a82e-c716ff17edd3.html
-import mlreportgen.report.* 
-import mlreportgen.dom.* 
+%see more information at ?ï¿½https://www.mathworks.com/help/rptgen/ug/_mw_bf8ea6ab-5b87-44fd-a82e-c716ff17edd3.html
+import mlreportgen.report.*
+import mlreportgen.dom.*
 
 %%
 %generate simple noise files
@@ -23,7 +23,7 @@ generateNoiseCalc('white', 120, 3);
 generateNoiseCalc('pink', 120, 3);
 generateNoiseCalc('brown', 120, 3);
 
-%% 
+%%
 %generate complex noise files (ground truth)
 generateNoiseCalc('purple', 120 * 60 * 5, 3);
 generateNoiseCalc('blue', 120 * 60 * 5, 3);
@@ -35,39 +35,39 @@ generateNoiseCalc('brown', 120 * 60 * 5, 3);
 %run fractal analysis on simple noise files
 %fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim )
 close all;
-fractal_analysis('calc_files/test/whiteNoise_120x3.calc', 120, false, false, false, 1);
-fractal_analysis('calc_files/test/whiteNoise_120x3.calc', 120, false, false, false, 2);
+fractal_analysis('calc_files/test/noise_white_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/noise_white_120x3.calc', 120, false, false, false, 2);
 close all;
-fractal_analysis('calc_files/test/blueNoise_120x3.calc', 120, false, false, false, 1);
-fractal_analysis('calc_files/test/blueNoise_120x3.calc', 120, false, false, false, 2);
+fractal_analysis('calc_files/test/noise_blue_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/noise_blue_120x3.calc', 120, false, false, false, 2);
 close all;
-fractal_analysis('calc_files/test/purpleNoise_120x3.calc', 120, false, false, false, 1);
-fractal_analysis('calc_files/test/purpleNoise_120x3.calc', 120, false, false, false, 2);
+fractal_analysis('calc_files/test/noise_purple_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/noise_purple_120x3.calc', 120, false, false, false, 2);
 close all;
-fractal_analysis('calc_files/test/pinkNoise_120x3.calc', 120, false, false, false, 1);
-fractal_analysis('calc_files/test/pinkNoise_120x3.calc', 120, false, false, false, 2);
+fractal_analysis('calc_files/test/noise_pink_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/noise_pink_120x3.calc', 120, false, false, false, 2);
 close all;
-fractal_analysis('calc_files/test/brownNoise_120x3.calc', 120, false, false, false, 1);
-fractal_analysis('calc_files/test/brownNoise_120x3.calc', 120, false, false, false, 2);
+fractal_analysis('calc_files/test/noise_brown_120x3.calc', 120, false, false, false, 1);
+fractal_analysis('calc_files/test/noise_brown_120x3.calc', 120, false, false, false, 2);
 close all;
 
 %%
 %run fractal analysis on complex noise files
 close all;
-fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 1, 1);
-fractal_analysis('calc_files/test/whiteNoise_36000x3.calc', 120, false, false, false, 2, 1);
+fractal_analysis('calc_files/test/noise_white_36000x3.calc', 120, false, false, false, 2, 1);
+fractal_analysis('calc_files/test/noise_white_36000x3.calc', 120, false, false, false, 1, 1);
 close all;
-fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 1, 1);
-fractal_analysis('calc_files/test/blueNoise_36000x3.calc', 120, false, false, false, 2, 1);
+fractal_analysis('calc_files/test/noise_blue_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/noise_blue_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 1, 1);
-fractal_analysis('calc_files/test/purpleNoise_36000x3.calc', 120, false, false, false, 2, 1);
+fractal_analysis('calc_files/test/noise_purple_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/noise_purple_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 1, 1);
-fractal_analysis('calc_files/test/pinkNoise_36000x3.calc', 120, false, false, false, 2, 1);
+fractal_analysis('calc_files/test/noise_pink_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/noise_pink_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
-fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 1, 1);
-fractal_analysis('calc_files/test/brownNoise_36000x3.calc', 120, false, false, false, 2, 1);
+fractal_analysis('calc_files/test/noise_brown_36000x3.calc', 120, false, false, false, 1, 1);
+fractal_analysis('calc_files/test/noise_brown_36000x3.calc', 120, false, false, false, 2, 1);
 close all;
 
 %%
