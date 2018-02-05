@@ -16,6 +16,13 @@ if nargin < 4
     end
 end
 
+if iscell(nType)
+    for i = drange(1:size(nType, 2))
+        generateNoiseCalc(nType{1,i}, nSamp, nChan, outDir);
+    end
+    return
+end
+
 %set inverse frequency power based on noise type
 switch nType
     case {'brown', 'brownian', 'red', 2}
