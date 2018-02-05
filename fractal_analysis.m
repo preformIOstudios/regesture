@@ -153,7 +153,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         %save out figure
         fig = gcf;
         fig.Position = [0 0 1276 705];
-        saveas(fig,fullfile(fPath,[fName '_fig' num2str(fig.Number)]),figfmt);
+        saveas(fig,fullfile(fPath,[fName '_selfSim']),figfmt);
         %TODO: move analysis above to its own function and call it here instead?
     end
 
@@ -166,9 +166,11 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     %---------------
     if (fractalDim ~= 0)
         if fractalDim == 1
-            method = '"Least Squares"';
+            method = 'Least Squares';
+            fNameM = 'ls';
         else
-            method = '"Theil-Sen"';
+            method = 'Theil-Sen';
+            fNameM = 'ts';
         end
         
         figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
@@ -252,7 +254,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
             subplot(R,C,C*0+3);
             %<HzLPass data lin reg
-                title(['<' num2str(HzLPass) 'Hz ' method ' lin reg']);
+                title(['<' num2str(HzLPass) 'Hz "' method '" lin reg']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
@@ -271,7 +273,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 
             subplot(R,C,C*1+3);
             %all data lin reg     
-                title(['all Hz ' method ' lin reg']);
+                title(['all Hz "' method '" lin reg']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
@@ -291,7 +293,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
             subplot(R,C,C*0+4);
             %<HzLPass fDim (based on slope dist)
-                title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit(' method ' slopes)']});
+                title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit("' method '" slopes)']});
                 
                 if min(size(bLPass)) ~= 0 
                     slopesLPass = bLPass(2, :)';
@@ -318,7 +320,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
             
             subplot(R,C,C*1+4);
             %all Hz fDim (based on slope dist)
-                title({'all Hz fDim';['histfit(' method ' slopes)']});
+                title({'all Hz fDim';['histfit("' method '" slopes)']});
 
                 slopes = b(2, :)';
                 
@@ -347,6 +349,6 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         %save out figure
         fig = gcf;
         fig.Position = [0 0 1276 705];
-        saveas(fig,fullfile(fPath,[fName '_fig' num2str(fig.Number)]),figfmt);
+        saveas(fig,fullfile(fPath,[fName '_fDim_' fNameM]),figfmt);
     end
 end
