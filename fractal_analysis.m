@@ -188,6 +188,15 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 title(['fDATA = "' dName '"']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 plot(fDATA);
+                if size(fData, 2) > 6
+                    %TODO: display gradient
+                    colorbar
+                else
+                    %TODO: display legend
+                    legend show Location NorthEastOutside
+                end
+                xlabel('sample');
+                ylabel('amplitude');
 
             subplot(R,C,C*1+1);
             %periodogram
@@ -196,6 +205,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 grid on;
                 hold on; % add any enclosed plots to the same graph
                     linPRDG = plot(w, 10*log10(PRDG), '-');
+                    xlabel('Hz');
+                    ylabel('dB--/rad/samp = 10*log10(P/F)');
                 hold off;
 
             subplot(R,C,C*1+2);
@@ -204,9 +215,9 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    llPRDG = plot(10*log10(w), 10*log10(PRDG), '-');
-                    %TODO: why is this different?
-                    % llPRDG = loglog(w, PRDG);
+                    llPRDG = plot(log10(w), 10*log10(PRDG), '-');
+                    xlabel('log10(Hz)');
+                    ylabel('dB');
 
                     %capture X and Y data for linear regression analysis
                     if size(fDATA, 2) > 1
@@ -223,7 +234,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
             
             subplot(R,C,C*0+2);
             %<HzLPass log/log plot
-                title(['<' num2str(HzLPass) 'Hz PRDG log/log plot']);
+                title(['< ' num2str(HzLPass) 'Hz PRDG log/log plot']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
 
                 %remove values greater than zero
@@ -235,6 +246,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold on; % add any enclosed plots to the same graph
                     %plot reduced data set 
                     plot(xLPass,yLPass, '-');
+                    xlabel('log10(Hz)');
+                    ylabel('dB');
                 hold off;
 
             subplot(R,C,C*0+3);
@@ -246,6 +259,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
                     %re-plot underlying data
                     plot(xLPass, yLPass, ':');
+                    xlabel('log10(Hz)');
+                    ylabel('dB');
 
                     %calculate linear regression + yintercept
                     [yLPassCalc, bLPass] = linreg(xLPass,yLPass, fractalDim);
@@ -263,6 +278,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
                     %re-plot underlying data
                     plot(x2, y2, ':');
+                    xlabel('log10(Hz)');
+                    ylabel('dB');
                     
                     %calculate linear regression + yintercept
                     [yCalc, b] = linreg(x2,y2, fractalDim);
@@ -274,7 +291,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
             subplot(R,C,C*0+4);
             %<HzLPass fDim (based on slope dist)
-                title({['<' num2str(HzLPass) 'Hz fDim'];['histfit(' method ' slopes)']});
+                title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit(' method ' slopes)']});
                 
                 if min(size(bLPass)) ~= 0 
                     slopesLPass = bLPass(2, :)';
@@ -290,7 +307,10 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                         ylimsLPass = ylim;
                         textYLPass = interp1(ylimsLPass, 1.9);
                         plot ([pdLPass.mu pdLPass.mu], ylimsLPass);
-                        text(pdLPass.mu,textYLPass,{['\leftarrow ' num2str(pdLPass.mu)]; [' f dim = ' num2str((2-pdLPass.mu)/2)]});
+                        text(pdLPass.mu,textYLPass,{['\leftarrow mu = ' num2str(pdLPass.mu)]; [' f dim = ' num2str((2-pdLPass.mu)/2)]});
+                        xlabel('slope');
+                        ylabel('density');
+                        
                     hold off;
                 else
                     warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesLPass)); 
@@ -310,7 +330,10 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                         ylims = ylim;
                         textY = interp1(ylim, 1.9);
                         plot ([pd.mu pd.mu], ylims);
-                        text(pd.mu,textY,{['\leftarrow ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+                        text(pd.mu,textY,{['\leftarrow mu = ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+                        xlabel('slope');
+                        ylabel('density');
+                        
                     hold off;
                 else
                     warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 

@@ -16,12 +16,15 @@ import mlreportgen.report.*
 import mlreportgen.dom.*
 
 %%
-%generate simple noise files
-generateNoiseCalc('purple', 120, 3);
-generateNoiseCalc('blue', 120, 3);
-generateNoiseCalc('white', 120, 3);
-generateNoiseCalc('pink', 120, 3);
-generateNoiseCalc('brown', 120, 3);
+%generate simple noise files (ground truth)
+samp = 120;
+secs = 1;
+chans = 3;
+generateNoiseCalc('purple', samp * secs, chans);
+generateNoiseCalc('blue', samp * secs, chans);
+generateNoiseCalc('white', samp * secs, chans);
+generateNoiseCalc('pink', samp * secs, chans);
+generateNoiseCalc('brown', samp * secs, chans);
 
 %%
 %generate complex noise files (ground truth)
@@ -30,6 +33,14 @@ generateNoiseCalc('blue', 120 * 60 * 5, 3);
 generateNoiseCalc('white', 120 * 60 * 5, 3);
 generateNoiseCalc('pink', 120 * 60 * 5, 3);
 generateNoiseCalc('brown', 120 * 60 * 5, 3);
+
+%%
+%generate extremely complex noise files (ground truth)
+generateNoiseCalc('purple', 120 * 60 * 15, 3);
+generateNoiseCalc('blue', 120 * 60 * 15, 3);
+generateNoiseCalc('white', 120 * 60 * 15, 3);
+generateNoiseCalc('pink', 120 * 60 * 15, 3);
+generateNoiseCalc('brown', 120 * 60 * 15, 3);
 
 %%
 %run fractal analysis on simple noise files
