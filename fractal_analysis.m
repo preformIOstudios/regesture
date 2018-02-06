@@ -38,12 +38,12 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     %handle multiple files and fractal dim analyses
     if iscell(file)
         for i = drange(1:size(file, 2))
-            fractal_analysis(file{1,i}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass);
+            fractal_analysis(file{1,i}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass, outDir);
         end
         return
     elseif iscell(fractalDim)
         for i = drange(1:size(fractalDim, 2))
-            fractal_analysis(file, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,i}, HzLPass);
+            fractal_analysis(file, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,i}, HzLPass, outDir);
         end
         return
     end
