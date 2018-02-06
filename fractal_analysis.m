@@ -1,4 +1,4 @@
-function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass )
+function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass, outDir )
 
 %TODO: update function summary and explanation below
 %CREATE_RASTER Summary of this function goes here
@@ -19,7 +19,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     dFilter = '';
                     if nargin < 2
                         %default samplesize
-                        sampleSize = 120;
+                        sampleRate = 120;
                         if nargin < 1
                             %default dataset
                             file = 'calc_files/test/MasterLiuPerformanceALL_Char00_stripped.calc';
@@ -29,8 +29,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
             end 
         end
     end
-    if nargin < 7
-        HzLPass = sampleSize / 2;
+    if nargin < 7 || isnan(HzLPass)
+        HzLPass = sampleRate / 2;
     end
     if HzLPass == 0
         error(['HzLPass should be set to values > 0Hz. HzLPass = ' num2str(HzLPass)]);
@@ -38,12 +38,12 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     %handle multiple files and fractal dim analyses
     if iscell(file)
         for i = drange(1:size(file, 2))
-            fractal_analysis(file{1,i}, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass);
+            fractal_analysis(file{1,i}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass);
         end
         return
     elseif iscell(fractalDim)
         for i = drange(1:size(fractalDim, 2))
-            fractal_analysis(file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim{1,i}, HzLPass);
+            fractal_analysis(file, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,i}, HzLPass);
         end
         return
     end
@@ -51,6 +51,9 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     %set private variable values
     file = fullfile(file);
     [fPath,fName,fExt] = fileparts(file);
+    if nargin < 8
+        outDir = fPath;
+    end
     figfmt = 'png'; %TODO: parameterize this?
     figW = 1276; figH = 705; %TODO: parameterize these
     dName = replace(fName,'_', '\_'); %avoid accidental subscript formatting in titles later
@@ -181,16 +184,16 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
 
         %TODO: move this out to batch file
         % %save out scaled log of data distances to an image
-        imwrite(d, fullfile(fPath,[fName '_data.png']));
+        imwrite(d, fullfile(outDir,[fName '_data.png']));
         % %save out scaled log of filtered data distances to an image
-        imwrite(d, fullfile(fPath,[fName '_fdata.png']));
+        imwrite(d, fullfile(outDir,[fName '_fdata.png']));
         % %save out scaled log of excluded data distances to an image
-        imwrite(d, fullfile(fPath,[fName '_edata.png']));
+        imwrite(d, fullfile(outDir,[fName '_edata.png']));
         % %save out scaled image of error data to an image
-        imwrite(d, fullfile(fPath,[fName '_error.png']));
+        imwrite(d, fullfile(outDir,[fName '_error.png']));
         %---------------
         %save out figure
-        saveas(fig,fullfile(fPath,[fName '_selfSim']),figfmt);
+        saveas(fig,fullfile(outDir,[fName '_selfSim']),figfmt);
         %TODO: move analysis above to its own function and call it here instead?
     end
 
@@ -212,7 +215,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         
         %analyze individual channels / groups of channels
         N = size(fDATA,1);
-        [PRDG, Hz] = periodogram(fDATA,rectwin(N),N,sampleSize);
+        [PRDG, Hz] = periodogram(fDATA,rectwin(N),N,sampleRate);
 
         %debug
         % N
@@ -403,6 +406,6 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         %save out relevant image(s) for paper
 
         %save out figure
-        saveas(fig,fullfile(fPath,[fName '_fDim_' fNameM]),figfmt);
+        saveas(fig,fullfile(outDir,[fName '_fDim_' fNameM '_' num2str(HzLPass) 'HzLPass']),figfmt);
     end
 end
