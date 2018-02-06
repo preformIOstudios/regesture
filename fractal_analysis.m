@@ -264,7 +264,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold on; % add any enclosed plots to the same graph
                     linPRDG = plot(w, 10*log10(PRDG), '-');
                     xlabel('Hz');
-                    ylabel('dB--/rad/samp = 10*log10(P/F)');
+                    ylabel('dB [i.e.:dB/rad/samp = 10*log10(P/F)]');
                 hold off;
 
             %log/log plot
@@ -273,9 +273,9 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    llPRDG = plot(log10(w), 10*log10(PRDG), '-');
+                    llPRDG = plot(log10(Hz), log10(PRDG), '-');
                     xlabel('log10(Hz)');
-                    ylabel('dB');
+                    ylabel('log10(P/F) [i.e.: dB/10]');
 
                     %capture X and Y data for linear regression analysis
                     if size(fDATA, 2) > 1
@@ -305,7 +305,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     %plot reduced data set 
                     plot(xLPass,yLPass, '-');
                     xlabel('log10(Hz)');
-                    ylabel('dB');
+                    ylabel('log10(P/F)');
                 hold off;
 
             %<HzLPass data lin reg
@@ -318,7 +318,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     %re-plot underlying data
                     plot(xLPass, yLPass, ':');
                     xlabel('log10(Hz)');
-                    ylabel('dB');
+                    ylabel('log10(P/F)');
 
                     %calculate linear regression + yintercept
                     [yLPassCalc, bLPass] = linreg(xLPass,yLPass, fractalDim);
@@ -337,7 +337,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     %re-plot underlying data
                     plot(x2, y2, ':');
                     xlabel('log10(Hz)');
-                    ylabel('dB');
+                    ylabel('log10(P/F)');
                     
                     %calculate linear regression + yintercept
                     [yCalc, b] = linreg(x2,y2, fractalDim);
