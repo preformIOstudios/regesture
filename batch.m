@@ -47,7 +47,7 @@
 
 
 %%
-%run fractal analysis on dance files from MITHA2017
+%run fractal analysis on dance files from MIT HA 2017
 clear;
 dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = NaN; outDir = 'calc_files/test/';
 sampleRate = 120;     mins = 0;	secs = 1;	chans = 900;  samps = sampleRate * 60 * mins + sampleRate * secs;
