@@ -296,7 +296,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
 
                 %remove values greater than zero
-                mask = x2<10*log10(HzLPass);
+                mask = x2<log10(HzLPass);
                 xLPass = reshape(x2(mask),[],size(x2,2));
                 yLPass = reshape(y2(mask),[],size(y2,2));
 
