@@ -382,6 +382,8 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
                 title({'all Hz fDim';['histfit("' method '" slopes)']});
 
                 slopes = b(2, :)';
+                slopes = slopes(~(abs(slopes) == Inf));
+                % slopes = slopes(~isnan(slopes)); %TODO: should I also remove NaN values?
                 
                 if numel(slopes) > 1
                     hold on;
