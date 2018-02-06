@@ -212,7 +212,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         
         %analyze individual channels / groups of channels
         N = size(fDATA,1);
-        [PRDG, w] = periodogram(fDATA,rectwin(N),N,sampleSize);
+        [PRDG, Hz] = periodogram(fDATA,rectwin(N),N,sampleSize);
 
         %debug
         % N
@@ -262,7 +262,7 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
-                    linPRDG = plot(w, 10*log10(PRDG), '-');
+                    linPRDG = plot(Hz, 10*log10(PRDG), '-');
                     xlabel('Hz');
                     ylabel('dB [i.e.:dB/rad/samp = 10*log10(P/F)]');
                 hold off;
