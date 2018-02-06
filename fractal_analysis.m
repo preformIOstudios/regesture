@@ -242,12 +242,16 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 title(['fDATA = "' dName '"']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 plot(fDATA);
-                if size(fData, 2) > 6
+                if size(fDATA, 2) > 11
                     %TODO: display gradient
-                    colorbar
+                    colormap(fColorSet);
+                    n = size(fColorSet,1);
+                    spread = size(fColorSet,1)/4.0;
+                    colorbar('Ticks', 0:0.25:1,...
+                        'TickLabels', ceil(0:spread:n));
                 else
                     %TODO: display legend
-                    legend show Location NorthEastOutside
+                    legend show Location NorthEast;
                 end
                 xlabel('sample');
                 ylabel('amplitude');
