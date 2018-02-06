@@ -52,19 +52,14 @@ close all;
 fractal_analysis('calc_files/test/noise_white_120x3.calc', 120, false, false, false, 1);
 %%
 fractal_analysis('calc_files/test/noise_white_120x3.calc', 120, false, false, false, 2);
-close all;
 fractal_analysis('calc_files/test/noise_blue_120x3.calc', 120, false, false, false, 1);
 fractal_analysis('calc_files/test/noise_blue_120x3.calc', 120, false, false, false, 2);
-close all;
 fractal_analysis('calc_files/test/noise_purple_120x3.calc', 120, false, false, false, 1);
 fractal_analysis('calc_files/test/noise_purple_120x3.calc', 120, false, false, false, 2);
-close all;
 fractal_analysis('calc_files/test/noise_pink_120x3.calc', 120, false, false, false, 1);
 fractal_analysis('calc_files/test/noise_pink_120x3.calc', 120, false, false, false, 2);
-close all;
 fractal_analysis('calc_files/test/noise_brown_120x3.calc', 120, false, false, false, 1);
 fractal_analysis('calc_files/test/noise_brown_120x3.calc', 120, false, false, false, 2);
-close all;
 
 %%
 %run fractal analysis on wide short noise files
@@ -84,7 +79,6 @@ fractal_analysis(files{1,1}, 120, false, false, false, 1);
 %all
 close all;
 fractal_analysis(files, 120, false, false, false, {1,2});
-close all;
 
 
 %%
@@ -93,19 +87,14 @@ close all;
 fractal_analysis('calc_files/test/noise_white_36000x3.calc', 120, false, false, false, 1, 1);
 %%
 fractal_analysis('calc_files/test/noise_white_36000x3.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_blue_36000x3.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_blue_36000x3.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_purple_36000x3.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_purple_36000x3.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_pink_36000x3.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_pink_36000x3.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_brown_36000x3.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_brown_36000x3.calc', 120, false, false, false, 2, 1);
-close all;
 
 %%
 %run fractal analysis on longest noise files
@@ -133,23 +122,18 @@ close all;
 fractal_analysis('calc_files/test/noise_white_108000x900.calc', 120, false, false, false, 1, 1);
 %%
 fractal_analysis('calc_files/test/noise_white_108000x900.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_blue_108000x900.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_blue_108000x900.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_purple_108000x900.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_purple_108000x900.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_pink_108000x900.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_pink_108000x900.calc', 120, false, false, false, 2, 1);
-close all;
 fractal_analysis('calc_files/test/noise_brown_108000x900.calc', 120, false, false, false, 1, 1);
 fractal_analysis('calc_files/test/noise_brown_108000x900.calc', 120, false, false, false, 2, 1);
-close all;
 
 %%
 %run fractal analysis on dance files from MITHA2017
-
+close all;
 fractal_analysis('calc_files/africa/africa_down_Char00.calc');
 fractal_analysis('calc_files/africa/africa_left_Char00.calc');
 fractal_analysis('calc_files/africa/africa_right_Char00.calc');
