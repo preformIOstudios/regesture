@@ -1,4 +1,4 @@
-function ColorSet=varycolor(NumberOfPlots)
+function ColorSet=varycolor(NumberOfPlots, wrapBool)
 % VARYCOLOR Produces colors with maximum variation on plots with multiple
 % lines.
 %
@@ -25,19 +25,28 @@ function ColorSet=varycolor(NumberOfPlots)
 %  - https://www.mathworks.com/matlabcentral/fileexchange/21050-varycolor
 %Redesigned by david allen 12/02/2017
 
-narginchk(1,1)%correct number of input arguements??
-nargoutchk(0, 1)%correct number of output arguements??
+narginchk(1,2)%correct number of input arguements??
+nargoutchk(0,1)%correct number of output arguements??
 
 %Take care of the anomolies
-if NumberOfPlots<1
+if (nargin<2) 
+    wrapBool = false;
+end
+
+if (NumberOfPlots<1) 
     ColorSet=[];
     
 else %default and where this function has an actual advantage
     %store colors to interploate in a set
     %TODO: make color set an input argument
     colors = [1.0 0.0 0.0; 1.0 1.0 0.0; 0.0 1.0 0.0; 0.0 1.0 1.0; 0.0 0.0 1.0; 1.0 0.0 1.0];
-    n = size(colors, 1);
-    colorwheel = vertcat(colors, colors(1,:));
+    if wrapBool
+        n = size(colors, 1);
+        colorwheel = vertcat(colors, colors(1,:));
+    else
+        n = size(colors, 1)-1;
+        colorwheel = colors;
+    end
     %create vector of how far apart colors should be on color wheel
     spread = n / NumberOfPlots;
     spreadS = 1:spread:n+1-spread;
