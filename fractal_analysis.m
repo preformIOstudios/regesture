@@ -58,6 +58,11 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     figW = 1276; figH = 705; %TODO: parameterize these
     dName = replace(fName,'_', '\_'); %avoid accidental subscript formatting in titles later
 
+    %report status
+    disp(['fractal_analysis() :: file = ' file]);
+    %start function timer
+    TimeFNC = clock;
+
     %import data from file name
     DATA = load(file);
     sz = size(DATA);
@@ -107,6 +112,8 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     %create self-similarity matrix
     %---------------
     if (calcSelfSim == true)
+        tic
+        
         %get self-similarity graphs
         D = similarity(DATA);
         fD = similarity(fDATA);
@@ -206,8 +213,11 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
         imwrite(d, fullfile(outDir,[fName '_error.png']));
         %---------------
         %save out figure
-        saveas(fig,fullfile(outDir,[fName '_selfSim']),figfmt);
+        filename = fullfile(outDir,[fName '_selfSim']);
+        saveas(fig,filename,figfmt);
         %TODO: move analysis above to its own function and call it here instead?
+        disp([ filename ' :: toc']);
+        toc
     end
 
     %---------------
@@ -218,6 +228,8 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     %instead
     %---------------
     if (fractalDim ~= 0)
+        tic
+        
         if fractalDim == 1
             method = 'Least Squares';
             fNameM = 'ls';
@@ -421,6 +433,10 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
         %save out relevant image(s) for paper
 
         %save out figure
-        saveas(fig,fullfile(outDir,[fName '_fDim_' fNameM '_' num2str(HzLPass) 'HzLPass']),figfmt);
+        filename = fullfile(outDir,[fName '_fDim_' fNameM '_' num2str(HzLPass) 'HzLPass']);
+        saveas(fig,filename,figfmt);
+        disp([filename ' :: toc']);
+        toc
     end
+    disp(['fractal_analysis() :: etime = ' num2str(etime(clock,TimeFNC)) ' secs']);
 end
