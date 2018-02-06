@@ -35,6 +35,18 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     if HzLPass == 0
         error(['HzLPass should be set to values > 0Hz. HzLPass = ' num2str(HzLPass)]);
     end
+    %handle multiple files and fractal dim analyses
+    if iscell(file)
+        for i = drange(1:size(file, 2))
+            fractal_analysis(file{1,i}, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass);
+        end
+        return
+    elseif iscell(fractalDim)
+        for i = drange(1:size(fractalDim, 2))
+            fractal_analysis(file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim{1,i}, HzLPass);
+        end
+        return
+    end
     
     %set private variable values
     file = fullfile(file);
