@@ -60,10 +60,23 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
 
     %import data from file name
     DATA = load(file);
-    %TODO: parameterize e,s,c
-    %set end, start, and cut points in the data
-    e = size(DATA, 2);
-    s = 1;    c = e; %all elems
+    sz = size(DATA);
+    %calculate hours, minutes, and seconds based on data size / sampleRate
+    samps = sz(1);
+    sampsSc = sampleRate;
+    sampsMn = sampleRate*60;
+    sampsHr = sampsMn*60;
+    sampsR = samps;
+    hrs = floor(sampsR / sampsHr);
+    sampsR = sampsR - hrs*sampsHr;
+    mins = floor(sampsR / sampsMn);
+    sampsR = sampsR - mins*sampsMn;
+    secs = floor(sampsR / sampsSc);
+    sampsR = sampsR - secs*sampleRate;
+    %TODO: parameterize a,s,c
+    %set all, start, and cut points in the data
+    chans = sz(2);
+    s = 1;    c = chans; %all elems
     % s = 1;    c = 337; %337 elems
     % s = 15;   c = 44; %30 elems
     % s = 15;   c = 34; %20 elems
@@ -78,7 +91,7 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     % s = 15;   c = 18; %4 elems
     % s = 15;   c = 17; %3 elems
     % s = 15;   c = 15; %1 elem
-    ColorSet = varycolor(e);
+    ColorSet = varycolor(chans);
     %TODO: normalize & filter data rows (channels) 
     %   use only rotation and velocity data
     %   mask out rows with no data
@@ -87,8 +100,8 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     fDATA = DATA(:, s:c); 
     fColorSet = varycolor(c-s+1);
     %excluded data
-    eDATA = DATA(:, c+1:e); 
-    eColorSet = varycolor(e-c);
+    eDATA = DATA(:, c+1:chans); 
+    eColorSet = varycolor(chans-c);
 
     %---------------
     %create self-similarity matrix
@@ -242,7 +255,7 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
 
             %fDATA
             subplot(R,C,C*0+1);
-                title(['fDATA = "' dName '"']);
+                title({['fDATA = "' dName '"']; ['h:m:s:smpls = ' num2str(hrs,'%02.f') ':' num2str(mins,'%02.f') ':' num2str(secs,'%02.f') ':' num2str(sampsR,'%03.f') ' at ' num2str(sampleRate) 'smpl/s']});
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 plot(fDATA);
                 if size(fDATA, 2) > 11
@@ -261,7 +274,7 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
 
             %periodogram
             subplot(R,C,C*1+1);
-                title('fDATA periodogram (PRDG)');
+                title('fDATA periodogram [PRDG]');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
                 hold on; % add any enclosed plots to the same graph
