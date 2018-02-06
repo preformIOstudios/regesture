@@ -16,31 +16,37 @@ import mlreportgen.report.*
 import mlreportgen.dom.*
 
 %%
-%generate simple noise files (ground truth)
+%generate short noise files (ground truth)
 rate = 120;     mins = 0;	secs = 1;	chans = 3;  samps = rate * 60 * mins + rate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 generateNoiseCalc(types, samps, chans);
 
 %%
-%generate complex noise files (ground truth)
+%generate wide short  noise files (ground truth)
+rate = 120;     mins = 0;	secs = 1;	chans = 900;  samps = rate * 60 * mins + rate * secs;
+types = {'purple', 'blue', 'white', 'pink', 'brown'};
+generateNoiseCalc(types, samps, chans);
+
+%%
+%generate longer noise files (ground truth)
 rate = 120;     mins = 5;	secs = 0;	chans = 3;  samps = rate * 60 * mins + rate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 generateNoiseCalc(types, samps, chans);
 
 %%
-%generate long complex noise files (ground truth)
+%generate longest noise files (ground truth)
 rate = 120;     mins = 15;	secs = 0;	chans = 3;  samps = rate * 60 * mins + rate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 generateNoiseCalc(types, samps, chans);
 
 %%
-%generate extremely complex noise files (ground truth)
+%generate wide longest noise files (ground truth)
 rate = 120;     mins = 15;	secs = 0;	chans = 900;  samps = rate * 60 * mins + rate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 generateNoiseCalc(types, samps, chans);
 
 %%
-%run fractal analysis on simple noise files
+%run fractal analysis on short noise files
 %fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim, fractalDim )
 close all;
 fractal_analysis('calc_files/test/noise_white_120x3.calc', 120, false, false, false, 1);
@@ -61,7 +67,28 @@ fractal_analysis('calc_files/test/noise_brown_120x3.calc', 120, false, false, fa
 close all;
 
 %%
-%run fractal analysis on complex noise files
+%run fractal analysis on wide short noise files
+rate = 120;     mins = 0;	secs = 1;	chans = 900;  samps = rate * 60 * mins + rate * secs;
+types = {'purple', 'blue', 'white', 'pink', 'brown'};
+files = types;
+%create a list of file names
+for i = drange(1:size(types, 2))
+    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+end
+
+%%
+%single
+close all;
+fractal_analysis(files{1,1}, 120, false, false, false, 1);
+%%
+%all
+close all;
+fractal_analysis(files, 120, false, false, false, {1,2});
+close all;
+
+
+%%
+%run fractal analysis on longer noise files
 close all;
 fractal_analysis('calc_files/test/noise_white_36000x3.calc', 120, false, false, false, 1, 1);
 %%
@@ -81,7 +108,27 @@ fractal_analysis('calc_files/test/noise_brown_36000x3.calc', 120, false, false, 
 close all;
 
 %%
-%run fractal analysis on extremely complex noise files
+%run fractal analysis on longest noise files
+rate = 120;     mins = 15;	secs = 0;	chans = 3;  samps = rate * 60 * mins + rate * secs;
+types = {'purple', 'blue', 'white', 'pink', 'brown'};
+files = types;
+%create a list of file names
+for i = drange(1:size(types, 2))
+    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+end
+
+%%
+%single
+close all;
+fractal_analysis(files{1,1}, 120, false, false, false, 1, 1);
+%%
+%all
+close all;
+fractal_analysis(files, 120, false, false, false, {1,2}, 1);
+
+
+%%
+%run fractal analysis on wide longest noise files
 close all;
 fractal_analysis('calc_files/test/noise_white_108000x900.calc', 120, false, false, false, 1, 1);
 %%
