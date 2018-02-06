@@ -51,17 +51,28 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     %set private variable values
     file = fullfile(file);
     [fPath,fName,fExt] = fileparts(file);
-    figfmt = 'png';
+    figfmt = 'png'; %TODO: parameterize this?
+    figW = 1276; figH = 705; %TODO: parameterize these
     dName = replace(fName,'_', '\_'); %avoid accidental subscript formatting in titles later
 
     %import data from file name
     DATA = load(file);
+    %TODO: parameterize e,s,c
     %set end, start, and cut points in the data
     e = size(DATA, 2);
     s = 1;    c = e; %all elems
     % s = 1;    c = 337; %337 elems
+    % s = 15;   c = 44; %30 elems
+    % s = 15;   c = 34; %20 elems
+    % s = 15;   c = 30; %16 elems
+    % s = 15;   c = 27; %13 elems
+    % s = 15;   c = 26; %12 elems
+    % s = 15;   c = 25; %11 elems
+    % s = 15;   c = 24; %10 elems
     % s = 15;   c = 21; %7 elems
     % s = 15;   c = 20; %6 elems
+    % s = 15;   c = 19; %5 elems
+    % s = 15;   c = 18; %4 elems
     % s = 15;   c = 17; %3 elems
     % s = 15;   c = 15; %1 elem
     ColorSet = varycolor(e);
@@ -80,25 +91,41 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
     %create self-similarity matrix
     %---------------
     if (calcSelfSim == true)
-        figure('NumberTitle', 'off', 'Name', [fName ' Self-Similarity Graph']);
-        R = 4; C = 3;
-            %get self-similarity graphs
-            D = similarity(DATA);
-            fD = similarity(fDATA);
-            eD = similarity(eDATA);
-            %calculate scaled log of distances
-            d1 = log(D);
-            d = d1 / max(d1(:));
-            fd1 = log(D);
-            fd = fd1 / max(fd1(:));
-            ed1 = log(eD);
-            ed = ed1 / max(ed1(:));
-            %calculate distance contribution of excluded data
-            format long
-            error1 = abs(D-fD);
-            errorImg = error1 / max(error1(:));
+        %get self-similarity graphs
+        D = similarity(DATA);
+        fD = similarity(fDATA);
+        eD = similarity(eDATA);
+        %calculate scaled log of distances
+        d1 = log(D);
+        d = d1 / max(d1(:));
+        fd1 = log(D);
+        fd = fd1 / max(fd1(:));
+        ed1 = log(eD);
+        ed = ed1 / max(ed1(:));
+        %calculate distance contribution of excluded data
+        format long
+        error1 = abs(D-fD);
+        errorImg = error1 / max(error1(:));
 
-            %display image of scaled log of distance matrix
+        %set figure properties
+        fig = figure('NumberTitle', 'off', 'Name', [fName ' Self-Similarity Graph']);
+        fig.Position = [0 0 figW figH];
+        
+        %set rows and columns for subplots
+        R = 4; C = 3;
+        
+        %create subplots
+        % %TODO: set positions of subplots to fit maximum space better
+        % ax = gca;
+        % outerpos = ax.OuterPosition;
+        % ti = ax.TightInset; 
+        % left = outerpos(1) + ti(1);
+        % bottom = outerpos(2) + ti(2);
+        % ax_width = outerpos(3) - ti(1) - ti(3);
+        % ax_height = outerpos(4) - ti(2) - ti(4);
+        % ax.Position = [left bottom ax_width ax_height];
+        
+            %image of scaled log of distance matrix
             subplot(R,C,C*0+1);
                 imshow(d, 'colormap', gray);
                 title('DATA Distance Image [ log, scaled ]');
@@ -109,12 +136,12 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 plot(DATA);
                 title('plot(DATA)');
 
-            %display image of data
+            %image of data
             subplot(R,C,C*0+3);
                 imagesc(DATA);
                 title('imagesc(DATA)');
 
-            %display image of scaled log of filtered data distance matrix
+            %image of scaled log of filtered data distance matrix
             subplot(R,C,C*1+1);
                 imshow(fd, 'colormap', gray);
                 title('fDATA Distance Image [ log, scaled ]');
@@ -125,12 +152,12 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 plot(fDATA);
                 title('plot(fDATA)');
 
-            %display image of filtered data
+            %image of filtered data
             subplot(R,C,C*1+3);
                 imagesc(fDATA);
                 title('imagesc(fDATA)');
 
-            %display image of excluded data distance matrix
+            %image of excluded data distance matrix
             subplot(R,C,C*2+1);
                 imshow(ed, 'colormap', gray);
                 title('eDATA Distance Image [ log, scaled ]');
@@ -141,12 +168,12 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 plot(eDATA);
                 title('eDATA');
 
-            %display image of excluded data
+            %image of excluded data
             subplot(R,C,C*2+3);
                 imagesc(eDATA);
                 title('imagesc(eDATA)');
 
-            %display image of error data distance matrix
+            %image of error data distance matrix
             subplot(R,C,C*3+1);
                 imshow(errorImg, 'colormap', gray);
                 title('Error Image [ scaled ]');
@@ -163,8 +190,6 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         imwrite(d, fullfile(fPath,[fName '_error.png']));
         %---------------
         %save out figure
-        fig = gcf;
-        fig.Position = [0 0 1276 705];
         saveas(fig,fullfile(fPath,[fName '_selfSim']),figfmt);
         %TODO: move analysis above to its own function and call it here instead?
     end
@@ -185,8 +210,6 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
             fNameM = 'ts';
         end
         
-        figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
-        R = 2; C = 4;
         %analyze individual channels / groups of channels
         N = size(fDATA,1);
         [PRDG, w] = periodogram(fDATA,rectwin(N),N,sampleSize);
@@ -196,9 +219,26 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         % size(w)
         % size(PRDG)
 
-        %plot analysis
-            subplot(R,C,C*0+1);
+        %set figure properties
+        fig = figure('NumberTitle', 'off', 'Name', [fName ' FFT analysis']);
+        fig.Position = [0 0 figW figH];
+
+        %set rows and columns for subplots
+        R = 2; C = 4;
+        
+        %create subplots
+        % %TODO: set positions of subplots to fit maximum space better
+        % ax = gca;
+        % outerpos = ax.OuterPosition;
+        % ti = ax.TightInset; 
+        % left = outerpos(1) + ti(1);
+        % bottom = outerpos(2) + ti(2);
+        % ax_width = outerpos(3) - ti(1) - ti(3);
+        % ax_height = outerpos(4) - ti(2) - ti(4);
+        % ax.Position = [left bottom ax_width ax_height];
+
             %fDATA
+            subplot(R,C,C*0+1);
                 title(['fDATA = "' dName '"']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 plot(fDATA);
@@ -212,8 +252,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 xlabel('sample');
                 ylabel('amplitude');
 
-            subplot(R,C,C*1+1);
             %periodogram
+            subplot(R,C,C*1+1);
                 title('fDATA periodogram (PRDG)');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
@@ -223,8 +263,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     ylabel('dB--/rad/samp = 10*log10(P/F)');
                 hold off;
 
-            subplot(R,C,C*1+2);
             %log/log plot
+            subplot(R,C,C*1+2);
                 title('PRDG log/log plot');
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
@@ -246,8 +286,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     y2 = y(2:end,:);
                 hold off;
             
-            subplot(R,C,C*0+2);
             %<HzLPass log/log plot
+            subplot(R,C,C*0+2);
                 title(['< ' num2str(HzLPass) 'Hz PRDG log/log plot']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
 
@@ -264,8 +304,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     ylabel('dB');
                 hold off;
 
-            subplot(R,C,C*0+3);
             %<HzLPass data lin reg
+            subplot(R,C,C*0+3);
                 title(['<' num2str(HzLPass) 'Hz "' method '" lin reg']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
@@ -283,8 +323,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     plot(xLPass,yLPassCalc);
                 hold off;
                 
-            subplot(R,C,C*1+3);
             %all data lin reg     
+            subplot(R,C,C*1+3);
                 title(['all Hz "' method '" lin reg']);
                 set(gca, 'ColorOrder', fColorSet, 'NextPlot', 'replacechildren');
                 grid on;
@@ -303,8 +343,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                 hold off;
 
 
-            subplot(R,C,C*0+4);
             %<HzLPass fDim (based on slope dist)
+            subplot(R,C,C*0+4);
                 title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit("' method '" slopes)']});
                 
                 if min(size(bLPass)) ~= 0 
@@ -330,8 +370,8 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
                     warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesLPass)); 
                 end
             
-            subplot(R,C,C*1+4);
             %all Hz fDim (based on slope dist)
+            subplot(R,C,C*1+4);
                 title({'all Hz fDim';['histfit("' method '" slopes)']});
 
                 slopes = b(2, :)';
@@ -359,8 +399,6 @@ function [] = fractal_analysis( file, sampleSize, dFilter, ignoreZ, calcSelfSim,
         %save out relevant image(s) for paper
 
         %save out figure
-        fig = gcf;
-        fig.Position = [0 0 1276 705];
         saveas(fig,fullfile(fPath,[fName '_fDim_' fNameM]),figfmt);
     end
 end
