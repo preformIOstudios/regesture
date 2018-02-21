@@ -45,51 +45,67 @@ function [m, b] = TheilSen(data)
 % edits d. allen December 2015:
 %   - added recursion for handling multiple data sets at once
 
-sz = size(data);
-if length(sz)<2 | min(sz) ==0  
-    warning('Expecting MxD data matrix with at least 2 observations.')
-    m = [];
-    b = [];
-    return
-end
+    sz = size(data);
 
-if length(sz)>2 && sz(3) > 1
-    mArr = zeros(sz(3),1); bArr = zeros(sz(3),1);
-    for i=1:sz(3)
-        % accumulate slopes
-        [mArr(i), bArr(i)] = TheilSen(data(:,:,i));
-    end
-    m = mArr;
-    if nargout==2
-        b = bArr;
+    if length(sz)<2 | min(sz) ==0
+        warning('Expecting MxD data matrix with at least 2 observations.')
+        m = [];
+        b = [];
+        return
     end
 
-elseif sz(2)==2         % normal 2-D case
-    C = nan(sz(1));
-    for i=1:sz(1)
-        % accumulate slopes
-        C(i,i:end) = (data(i,2)-data(i:end,2))./(data(i,1) - data(i:end,1));
+    if length(sz)>2 && sz(3) > 1 % more than one line
+        mArr = zeros(sz(3),1); bArr = zeros(sz(3),1);
+        for i=1:sz(3)
+            % accumulate slopes
+            [mArr(i), bArr(i)] = TheilSen(data(:,:,i));
+        end
+        m = mArr;
+        if nargout==2
+            b = bArr;
+        end
+
+    else
+        %smooth data if it is too long
+        maxNan = 1e+4;
+        if sz(1) > maxNan %TODO: find a more data-driven (system memory?) method for this threshold
+            
+            %display warning
+            warning(['TheilSen() :: Data is too large for nan(). \n Resampling by a factor of ' num2str(maxNan/sz(1))]);
+            data = resample(data, 1, ceil(sz(1)/maxNan));
+            sz = size(data);
+        end
+        
+        %report status
+        disp('TheilSen() :: accumulating slopes');
+
+        if sz(2)==2         % normal 2-D case
+            C = nan(sz(1));
+            for i=1:sz(1)
+                % accumulate slopes
+                C(i,i:end) = (data(i,2)-data(i:end,2))./(data(i,1) - data(i:end,1));
+            end
+            m = nanmedian(C(:));                        % calculate slope estimate
+
+            if nargout==2
+                b = nanmedian(data(:,2)-m*data(:,1));   % calculate intercept if requested
+            end
+
+        else                % other cases
+            C = nan(sz(1),sz(2)-1,sz(1));
+            for i=1:sz(1)
+                C(:,:,i) = bsxfun( @rdivide,data(i,end)-data(:,end),...
+                    bsxfun(@minus,data(i,1:end-1),data(:,1:end-1)) );       % accumulate slopes
+            end
+            Cprm = reshape( permute(C,[1 3 2]), [],size(C,2),1 );           % stack layers of C to 2D
+            m = nanmedian(Cprm,1);                                          % calculate slope estimate
+            
+            if nargout==2
+                % calculate all intercepts if requested
+                b = nanmedian( bsxfun(@minus,data(:,end),bsxfun(@times,m,data(:,1:end-1))) );
+            end
+        end
     end
-    m = nanmedian(C(:));                        % calculate slope estimate
-    
-    if nargout==2
-        b = nanmedian(data(:,2)-m*data(:,1));   % calculate intercept if requested
-    end
-    
-else                % other cases
-    C = nan(sz(1),sz(2)-1,sz(1));
-    for i=1:sz(1)
-        C(:,:,i) = bsxfun( @rdivide,data(i,end)-data(:,end),...
-            bsxfun(@minus,data(i,1:end-1),data(:,1:end-1)) );       % accumulate slopes    
-    end
-    Cprm = reshape( permute(C,[1 3 2]), [],size(C,2),1 );           % stack layers of C to 2D
-    m = nanmedian(Cprm,1);                                          % calculate slope estimate
-    
-    if nargout==2
-        % calculate all intercepts if requested
-        b = nanmedian( bsxfun(@minus,data(:,end),bsxfun(@times,m,data(:,1:end-1))) );   
-    end
-    
 end
 
 

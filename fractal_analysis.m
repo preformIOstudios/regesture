@@ -64,7 +64,19 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     TimeFNC = clock;
 
     %import data from file name
-    DATA = load(file);
+    switch fExt
+        case '.calc'
+            DATA = load(file);
+        case '.mp3'
+            [y, Fs] = audioread(file);
+            DATA = y;
+            if isnan(sampleRate)
+                sampleRate = Fs;
+            end
+        otherwise
+            warning(['unsupoorted file type -- fExt = ' fExt]);
+            return;
+    end
     sz = size(DATA);
     %calculate hours, minutes, and seconds based on data size / sampleRate
     samps = sz(1);
@@ -252,7 +264,12 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
         fig.Position = [0 0 figW figH];
 
         %set rows and columns for subplots
-        R = 2; C = 4;
+        R = 2;
+        if chans > 1
+            C = 4;
+        else
+            C = 3;
+        end
         
         %create subplots
         % %TODO: set positions of subplots to fit maximum space better
@@ -374,58 +391,59 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
                     plot(x2,yCalc);
                 hold off;
 
+            if chans > 1
+                %<HzLPass fDim (based on slope dist)
+                subplot(R,C,C*0+4);
+                    title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit("' method '" slopes)']});
 
-            %<HzLPass fDim (based on slope dist)
-            subplot(R,C,C*0+4);
-                title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit("' method '" slopes)']});
-                
-                if min(size(bLPass)) ~= 0 
-                    slopesLPass = bLPass(2, :)';
-                else
-                    slopesLPass = [];
-                end
-                    
-                if numel(slopesLPass) > 1
-                    hold on;
-                        hfLPass = histfit(slopesLPass);
-                        %add a line and label for mu
-                        pdLPass = fitdist(slopesLPass,'Normal');
-                        ylimsLPass = ylim;
-                        textYLPass = interp1(ylimsLPass, 1.9);
-                        plot ([pdLPass.mu pdLPass.mu], ylimsLPass);
-                        text(pdLPass.mu,textYLPass,{['\leftarrow mu = ' num2str(pdLPass.mu)]; [' f dim = ' num2str((2-pdLPass.mu)/2)]});
-                        xlabel('slope');
-                        ylabel('density');
-                        
-                    hold off;
-                else
-                    warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesLPass)); 
-                end
-            
-            %all Hz fDim (based on slope dist)
-            subplot(R,C,C*1+4);
-                title({'all Hz fDim';['histfit("' method '" slopes)']});
+                    if min(size(bLPass)) ~= 0 
+                        slopesLPass = bLPass(2, :)';
+                    else
+                        slopesLPass = [];
+                    end
 
-                slopes = b(2, :)';
-                slopes = slopes(~(abs(slopes) == Inf));
-                % slopes = slopes(~isnan(slopes)); %TODO: should I also remove NaN values?
-                
-                if numel(slopes) > 1
-                    hold on;
-                        hf = histfit(slopes);
-                        %add a line and label for mu
-                        pd = fitdist(slopes,'Normal');
-                        ylims = ylim;
-                        textY = interp1(ylim, 1.9);
-                        plot ([pd.mu pd.mu], ylims);
-                        text(pd.mu,textY,{['\leftarrow mu = ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
-                        xlabel('slope');
-                        ylabel('density');
-                        
-                    hold off;
-                else
-                    warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
-                end
+                    if numel(slopesLPass) > 1
+                        hold on;
+                            hfLPass = histfit(slopesLPass);
+                            %add a line and label for mu
+                            pdLPass = fitdist(slopesLPass,'Normal');
+                            ylimsLPass = ylim;
+                            textYLPass = interp1(ylimsLPass, 1.9);
+                            plot ([pdLPass.mu pdLPass.mu], ylimsLPass);
+                            text(pdLPass.mu,textYLPass,{['\leftarrow mu = ' num2str(pdLPass.mu)]; [' f dim = ' num2str((2-pdLPass.mu)/2)]});
+                            xlabel('slope');
+                            ylabel('density');
+
+                        hold off;
+                    else
+                        warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopesLPass)); 
+                    end
+
+                %all Hz fDim (based on slope dist)
+                subplot(R,C,C*1+4);
+                    title({'all Hz fDim';['histfit("' method '" slopes)']});
+
+                    slopes = b(2, :)';
+                    slopes = slopes(~(abs(slopes) == Inf));
+                    % slopes = slopes(~isnan(slopes)); %TODO: should I also remove NaN values?
+
+                    if numel(slopes) > 1
+                        hold on;
+                            hf = histfit(slopes);
+                            %add a line and label for mu
+                            pd = fitdist(slopes,'Normal');
+                            ylims = ylim;
+                            textY = interp1(ylim, 1.9);
+                            plot ([pd.mu pd.mu], ylims);
+                            text(pd.mu,textY,{['\leftarrow mu = ' num2str(pd.mu)]; [' f dim = ' num2str((2-pd.mu)/2)]});
+                            xlabel('slope');
+                            ylabel('density');
+
+                        hold off;
+                    else
+                        warning('Not enough data in "slopes" to fit this distribution. "slopes" = %2.3g', numel(slopes)); 
+                    end
+            end
 
         %composit those into a single p/f graph for entire dataset
         %    - need to consider different methodologies
