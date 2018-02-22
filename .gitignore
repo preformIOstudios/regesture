@@ -3,3 +3,5 @@ calc_files/test/noise_brown_108000x900.calc
 calc_files/test/noise_pink_108000x900.calc
 calc_files/test/noise_purple_108000x900.calc
 calc_files/test/noise_white_108000x900.calc
+*.mp3
+*.mat
