@@ -108,6 +108,7 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     % s = 15;   c = 18; %4 elems
     % s = 15;   c = 17; %3 elems
     % s = 15;   c = 15; %1 elem
+    % s = 1;    c = 1; %1 elem
     ColorSet = varycolor(chans);
     %TODO: normalize & filter data rows (channels) 
     %   use only rotation and velocity data
@@ -115,6 +116,7 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
     %HACK: filter out some channels (TODO: should be specified in external data file and based on zero data columns instead of this generic method)
     %filtered data
     fDATA = DATA(:, s:c); 
+    fChans = size(fDATA,2);
     fColorSet = varycolor(c-s+1);
     %excluded data
     eDATA = DATA(:, c+1:chans); 
@@ -265,7 +267,7 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
 
         %set rows and columns for subplots
         R = 2;
-        if chans > 1
+        if fChans > 1
             C = 4;
         else
             C = 3;
@@ -370,6 +372,15 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
 
                     %plot linear regression + y intercept as solid lines
                     plot(xLPass,yLPassCalc);
+                    
+                    %add fDim to this graph if there's only one channel of data
+                    if fChans == 1
+                        xlimsLPass1 = xlim;
+                        textXLPass = interp1(xlimsLPass1, 1.5);
+                        ylimsLPass1 = ylim;
+                        textYLPass = interp1(ylimsLPass1, 1.9);
+                        text(textXLPass,textYLPass,{['bLPass = ' num2str(bLPass(2))]; ['f dim = ' num2str((2-bLPass(2))/2)]});
+                    end
                 hold off;
                 
             %all data lin reg     
@@ -389,9 +400,18 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
 
                     %plot linear regression + y intercept as solid lines
                     plot(x2,yCalc);
+                    
+                    %add fDim to this graph if there's only one channel of data
+                    if fChans == 1
+                        xlims1 = xlim;
+                        textX1 = interp1(xlims1, 1.5);
+                        ylims1 = ylim;
+                        textY1 = interp1(ylims1, 1.9);
+                        text(textX1,textY1,{['b = ' num2str(b(2))]; ['f dim = ' num2str((2-b(2))/2)]});
+                    end
                 hold off;
 
-            if chans > 1
+            if fChans > 1
                 %<HzLPass fDim (based on slope dist)
                 subplot(R,C,C*0+4);
                     title({['< ' num2str(HzLPass) 'Hz fDim'];['histfit("' method '" slopes)']});
