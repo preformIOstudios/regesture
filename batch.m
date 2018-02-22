@@ -69,10 +69,13 @@ files = {...
     'calc_files\test\Music\Mozart\Wolfgang_Amadeus_Mozart_-_Symphony_40_g-moll_-_4_Allegro_assai.mp3'...
     };
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,4}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
@@ -98,10 +101,13 @@ for i = drange(1:nSty)
     end
 end
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
@@ -121,10 +127,13 @@ for i = drange(1:size(types, 2))
     files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
@@ -143,10 +152,13 @@ for i = drange(1:size(types, 2))
     files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
@@ -165,10 +177,13 @@ for i = drange(1:size(types, 2))
     files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
@@ -187,10 +202,13 @@ for i = drange(1:size(types, 2))
     files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
@@ -209,10 +227,13 @@ for i = drange(1:size(types, 2))
     files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
+if false
 %%
 %single
 close all;
 fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+end
+
 %%
 %all
 close all;
