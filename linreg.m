@@ -1,7 +1,8 @@
-function [yCalc, b] = linreg(x,y, method)
+function [yCalc, b] = linreg(x,y,method,w)
 %LINREG Summary of this function goes here
 %   Detailed explanation goes here
 %TODO: use an enum for regression method
+%   Credits: david allen, Il-Young Son
     
     %handle cases where there is no data
     sz = size(x);
@@ -18,10 +19,23 @@ function [yCalc, b] = linreg(x,y, method)
     
     if (method == 1)
         %"least squares" linear regression
-        b = X\y;
+        if nargin < 4           
+            %unweighted least squares lin reg
+            b = X\y;
+        else
+            %weighted least squares lin reg
+            wX = w.*X;
+            wy = w.*y;
+            b = wX\wy;
+        end
         yCalc = X*b;
         
     elseif (method == 2)
+        %give warning that weights are going to be ignored
+        if nargin == 4
+            warning('ignored weights (w) argument. Theil-Sen linear regression does not support weights.');
+        end
+        
         %"Theil-Sen" linear regression
         concat = [x y];
         unzip = reshape(concat, numel(x), []);

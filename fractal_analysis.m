@@ -367,8 +367,11 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
                     xlabel('log10(Hz)');
                     ylabel('log10(P/F)');
 
-                    %calculate linear regression + yintercept
-                    [yLPassCalc, bLPass] = linreg(xLPass,yLPass, fractalDim);
+                    %calculate weighted linear regression + yintercept
+                    dLPass = xLPass(:,1)-circshift(xLPass(:,1), -1);%graph space
+                    dLPass(end) = dLPass(end-1)*(dLPass(end-1)/dLPass(end-2));%TODO: figure out actual log1/n(w) way to do this
+                    wLPass = abs(dLPass)./range(xLPass(:,1));
+                    [yLPassCalc, bLPass] = linreg(xLPass, yLPass, fractalDim, wLPass);
 
                     %plot linear regression + y intercept as solid lines
                     plot(xLPass,yLPassCalc);
@@ -395,9 +398,12 @@ function [] = fractal_analysis( file, sampleRate, dFilter, ignoreZ, calcSelfSim,
                     xlabel('log10(Hz)');
                     ylabel('log10(P/F)');
                     
-                    %calculate linear regression + yintercept
-                    [yCalc, b] = linreg(x2,y2, fractalDim);
-
+                    %calculate weighted linear regression + yintercept
+                    d = x2(:,1)-circshift(x2(:,1), -1);%graph space
+                    d(end) = d(end-1)*(d(end-1)/d(end-2));%TODO: figure out actual log1/n(w) way to do this
+                    w = abs(d)./range(x2(:,1));
+                    [yCalc, b] = linreg(x2, y2, fractalDim, w);
+                    
                     %plot linear regression + y intercept as solid lines
                     plot(x2,yCalc);
                     
