@@ -48,7 +48,7 @@
 %%
 %run fractal analysis on audio files
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = 1; outDir = 'calc_files/test/Music';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = 1; outDir = 'calc_files/test/Music';
 sampleRate = NaN;
 %create a list of file names
 files = {...
@@ -76,7 +76,7 @@ fractal_analysis(files{1,4}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalD
 %%
 %all
 close all;
-fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass, outDir )
 %only least squares lin regression
 
 
@@ -84,7 +84,7 @@ fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,
 %%
 %run fractal analysis on dance files from MIT HA 2017
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = NaN; outDir = 'calc_files/test/';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = NaN; outDir = 'calc_files/test/Dance';
 sampleRate = 120;     mins = 0;	secs = 1;	chans = 900;  samps = sampleRate * 60 * mins + sampleRate * secs;
 styles = {'africa', 'contemp', 'hiphop', '2indian', 'salsa'};
 nSty = numel(styles);
@@ -105,20 +105,20 @@ fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalD
 %%
 %all
 close all;
-fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
+fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass, outDir )
 %only least squares lin regression
 
 
 %%
 %run fractal analysis on short noise files
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = NaN; outDir = 'calc_files/test/';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = NaN; outDir = 'calc_files/test/Noise';
 sampleRate = 120;     mins = 0;	secs = 1;	chans = 3;  samps = sampleRate * 60 * mins + sampleRate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 files = types;
 %create a list of file names
 for i = drange(1:size(types, 2))
-    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+    files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
 %%
@@ -134,13 +134,13 @@ fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, H
 %%
 %run fractal analysis on wide short noise files
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = NaN; outDir = 'calc_files/test/';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = NaN; outDir = 'calc_files/test/Noise';
 sampleRate = 120;     mins = 0;	secs = 1;	chans = 900;  samps = sampleRate * 60 * mins + sampleRate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 files = types;
 %create a list of file names
 for i = drange(1:size(types, 2))
-    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+    files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
 %%
@@ -156,13 +156,13 @@ fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, H
 %%
 %run fractal analysis on longer noise files
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = 1; outDir = 'calc_files/test/';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = 1; outDir = 'calc_files/test/Noise';
 sampleRate = 120;     mins = 5;	secs = 0;	chans = 3;  samps = sampleRate * 60 * mins + sampleRate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 files = types;
 %create a list of file names
 for i = drange(1:size(types, 2))
-    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+    files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
 %%
@@ -178,13 +178,13 @@ fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, H
 %%
 %run fractal analysis on longest noise files
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = 1; outDir = 'calc_files/test/';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = 1; outDir = 'calc_files/test/Noise';
 sampleRate = 120;     mins = 15;	secs = 0;	chans = 3;  samps = sampleRate * 60 * mins + sampleRate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 files = types;
 %create a list of file names
 for i = drange(1:size(types, 2))
-    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+    files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
 %%
@@ -194,25 +194,19 @@ fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalD
 %%
 %all
 close all;
-fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
-%unable to run Theil-Sen analysis because of memory constraints: error below
-% Error using nan
-% Requested 54000x54000 (21.7GB) array exceeds maximum array size preference. Creation of arrays greater than this limit may
-% take a long time and cause MATLAB to become unresponsive. See array size limit or preference panel for more information.
-% 
-% Error in TheilSen (line 68)
-%     C = nan(sz(1));
+fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass, outDir )
+
 
 %%
 %run fractal analysis on wide longest noise files
 clear;
-dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1,2}; HzLPass = 1; outDir = 'calc_files/test/';
+dFilter = false; ignoreZ = false; calcSelfSim = false; fractalDim = {1}; HzLPass = 1; outDir = 'calc_files/test/Noise';
 sampleRate = 120;     mins = 15;	secs = 0;	chans = 900;  samps = sampleRate * 60 * mins + sampleRate * secs;
 types = {'purple', 'blue', 'white', 'pink', 'brown'};
 files = types;
 %create a list of file names
 for i = drange(1:size(types, 2))
-    files{i} = ['calc_files/test/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
+    files{i} = ['calc_files/test/Noise/noise_' types{1,i} '_' num2str(samps) 'x' num2str(chans) '.calc'];
 end
 
 %%
@@ -222,13 +216,6 @@ fractal_analysis(files{1,1}, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalD
 %%
 %all
 close all;
-fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim{1,1}, HzLPass, outDir )
-%unable to run Theil-Sen analysis because of memory constraints: error below
-% Error using nan
-% Requested 54000x54000 (21.7GB) array exceeds maximum array size preference. Creation of arrays greater than this limit may
-% take a long time and cause MATLAB to become unresponsive. See array size limit or preference panel for more information.
-% 
-% Error in TheilSen (line 68)
-%     C = nan(sz(1));
+fractal_analysis(files, sampleRate, dFilter, ignoreZ, calcSelfSim, fractalDim, HzLPass, outDir )
 
 
